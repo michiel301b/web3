@@ -1,0 +1,16 @@
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background-color: aquamarine;
+}
+
+p {
+    color: aliceblue;
+}
+
+.card {
+    background-color: cadetblue;
+    width: 100px;
+    height: 300px;
+    aspect-ratio: 3/1;
+    text-align: center;
+}
