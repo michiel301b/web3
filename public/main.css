@@ -16,4 +16,40 @@ p {
     text-align: center;
     align-items: center;
     border-radius: 15px;
+    float: left;
+    margin: 10px;
+    transform-style: preserve-3d;
+}
+
+.solved-card {
+    background-color: #82dc7c;
+}
+
+.card:hover {
+    transform: scale(1.1);
+    background-color: #8ed3d5;
+}
+
+@keyframes card-flip {
+    0% {
+        transform: rotateY(0deg) scale(1);
+    }
+    50% {
+        transform: rotateY(90deg) scale(1.2);
+    }
+    100% {
+        transform: rotateY(0deg) scale(1);
+    }
+}
+
+.card-grid {
+    width: 600px;
+    height: 400px;
+    border: 1px solid black;
+}
+
+.border-cell {
+    border: 3px solid black;
+    width: 40px;
+    height: 40px;
 }
