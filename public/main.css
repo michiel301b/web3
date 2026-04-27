@@ -21,7 +21,7 @@ p {
     transform-style: preserve-3d;
 }
 
-.solved-card {
+.solved-card, .solved-card:hover {
     background-color: #82dc7c;
 }
 
@@ -52,4 +52,18 @@ p {
     border: 3px solid black;
     width: 40px;
     height: 40px;
+}
+
+.heart-container {
+    width: 500px;
+    height: 50px;
+}
+
+.heart {
+    width: 50px;
+    height: 50px;
+}
+
+.broken {
+    filter: hue-rotate(180deg);
 }

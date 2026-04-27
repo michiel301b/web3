@@ -1,8 +1,13 @@
-let deckOfCards = ["▲", "■", "●", "⬟"]
+let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"];
+let deckOfCards = []
+const STARTING_DECK_SIZE = 3;
+let deckSize = 0;
 let selected = [-1, -1]
 let shuffledDeckOfCards = []
 let solvedPairs = []
 let uiLocked = false
+let maxLives = 6
+let livesLeft = maxLives
 
 function shuffleDeckOfCards(deckOfCards) {
     shuffledDeckOfCards = deckOfCards.concat(deckOfCards)
@@ -25,8 +30,24 @@ function generateCardHtml(){
 }
 
 function startGame() {
+    if (deckSize === 0) {
+        deckSize = STARTING_DECK_SIZE
+    }
+    while(deckOfCards.length < deckSize) {
+        deckOfCards.push(standardPossibleCards[deckOfCards.length]);
+    }
     generateCardHtml();
 }
+
+function resetLevel() {
+    document.getElementById("card-holder").innerHTML = "";
+    solvedPairs = [];
+    selected = [-1, -1];
+    uiLocked = false;
+    deckSize += 1;
+    startGame();
+}
+
 function cardClick(id){
     if (uiLocked || document.getElementById(id).classList.contains("solved-card")) {
         return;
@@ -49,14 +70,22 @@ function cardClick(id){
             uiLocked = true;
             setTimeout(function(){resetCard(selected[0]);
                 resetCard(selected[1]);
+                breakHeart()
                 uiLocked = false;
                 selected = [-1, -1];}, 2000);
         }
         else {
-            solvedPairs.concat(checkMatchResult);
+            solvedPairs.push(checkMatchResult);
             setCardSolved(selected[0]);
             setCardSolved(selected[1]);
             selected = [-1, -1];
+        }
+
+        if(solvedPairs.sort().join("") === deckOfCards.sort().join("")) {
+            setTimeout(function(){
+                alert("Level complete!");
+                resetLevel();},
+                1000);
         }
     }
 
@@ -91,4 +120,16 @@ function resetCard(cardId){
 function setCardSolved(cardId){
     let cardElement = document.getElementById("card-" + cardId);
     setTimeout(function(){cardElement.className = cardElement.className + " solved-card"},400);
+}
+
+function breakHeart() {
+    livesLeft -= 1;
+    let breakingHeart = document.getElementById("heart"+livesLeft);
+    if (breakingHeart){
+        breakingHeart.className += " broken";
+    }
+    if (livesLeft <= 0){
+        setTimeout(function(){alert("Game Over");
+        window.location.href = "home_page.html";},1000);
+    }
 }
