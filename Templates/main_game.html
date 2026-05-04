@@ -11,20 +11,41 @@
     <script src="/scripts/cardDistributor.js"></script>
 </head>
 <body>
-<h1>Memory Roguelite V1</h1>
-<button onclick="startGame()">Start Game</button>
-<p>Select 2 cards and try to find all matching pairs!</p>
-<div id="heart-container">
-    <img id="heart0" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
-    <img id="heart1" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
-    <img id="heart2" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
-    <img id="heart3" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
-    <img id="heart4" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
-    <img id="heart5" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+<div class="topbar">
+    <h2 class="title">Memory Roguelite V1</h2>
 </div>
-<div id="card-holder" class="card-grid">
-    <div></div>
-</div>
+<div class="body-container">
+    <div id="card-container">
+        <div class="options">
+            <div class="buttons">
+            <button id="startGameButton" class="optionClass" onclick="startGame()">Start Game</button>
+            <button id="restartGameButton" class="hidden" onclick="resetGame()">Restart Game</button>
+            </div>
+            <div class="heart-container">
+                <img id="heart0" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart1" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart2" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart3" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart4" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart5" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart6" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart7" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart8" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+                <img id="heart9" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">
+            </div>
+        </div>
+        <div id="card-holder" class="card-grid">
+            <div></div>
+            <div class="options">
+            </div>
+        </div>
+    </div>
+    <div id="blurscreen" class="hidden">
+        <h2>Level complete!</h2>
+        <button class="blurbutton" onclick="nextLevel()">Go to next level</button>
+        <button class="blurbutton" onclick="endGame()">End game</button>
+    </div>
 
+</div>
 </body>
 </html>

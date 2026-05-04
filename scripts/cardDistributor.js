@@ -1,12 +1,12 @@
 let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"];
 let deckOfCards = []
-const STARTING_DECK_SIZE = 3;
+const STARTING_DECK_SIZE = 4;
 let deckSize = 0;
 let selected = [-1, -1]
 let shuffledDeckOfCards = []
 let solvedPairs = []
 let uiLocked = false
-let maxLives = 6
+let maxLives = 10
 let livesLeft = maxLives
 
 function shuffleDeckOfCards(deckOfCards) {
@@ -24,7 +24,7 @@ function generateCardHtml(){
     let cardholder = document.getElementById("card-holder");
     for (let i = 0; i < shuffledDeckOfCards.length; i++) {
         cardholder.innerHTML += "<div class='card' onclick='cardClick(id)' id='card-"+i+"'>" +
-            "<p>Memory roguelite</p>" +
+            "<p></p>" +
             "</div>";
     }
 }
@@ -37,6 +37,8 @@ function startGame() {
         deckOfCards.push(standardPossibleCards[deckOfCards.length]);
     }
     generateCardHtml();
+    document.getElementById("startGameButton").classList.add("hidden")
+    document.getElementById("restartGameButton").classList.remove("hidden");
 }
 
 function resetLevel() {
@@ -82,14 +84,37 @@ function cardClick(id){
         }
 
         if(solvedPairs.sort().join("") === deckOfCards.sort().join("")) {
-            setTimeout(function(){
-                alert("Level complete!");
-                resetLevel();},
-                1000);
+                levelDone();
+            }
         }
-    }
-
     //alert(cardId)
+}
+
+function endGame() {
+    setTimeout(
+        window.location.href = "home_page.html",1);
+}
+
+function resetGame() {
+    document.getElementById("card-holder").innerHTML = "";
+    deckOfCards = [];
+    solvedPairs = [];
+    selected = [-1, -1];
+    uiLocked = false;
+    deckSize = 0;
+    livesLeft = maxLives;
+    startGame();
+}
+
+function levelDone() {
+    document.getElementById("card-container").classList.add("blurred");
+    document.getElementById("blurscreen").classList.remove("hidden");
+}
+
+function nextLevel() {
+    document.getElementById("card-container").classList.remove("blurred");
+    document.getElementById("blurscreen").classList.add("hidden");
+    resetLevel();
 }
 
 function checkMatch(){
@@ -114,7 +139,7 @@ function resetCard(cardId){
     cardElement.style.animation = "none";
     cardElement.offsetHeight; //You apparently need this otherwise it will optimize the animation away
     cardElement.style.animation = "card-flip 0.8s ease-in-out backwards";
-    setTimeout(function(){cardElement.innerHTML = "<p>Memory Roguelite</p>"},400);
+    setTimeout(function(){cardElement.innerHTML = "<p></p>"},400);
 }
 
 function setCardSolved(cardId){
@@ -132,4 +157,17 @@ function breakHeart() {
         setTimeout(function(){alert("Game Over");
         window.location.href = "home_page.html";},1000);
     }
+}
+
+function healAllHearts() {
+    while (livesLeft < maxLives) {
+        healHeart();
+    }
+}
+
+function healHeart() {
+    if (livesLeft >= maxLives) return;
+    let heartToHeal = document.getElementById("heart"+livesLeft);
+    livesLeft += 1;
+    heartToHeal.classList.remove("broken");
 }
