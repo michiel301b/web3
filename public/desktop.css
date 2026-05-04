@@ -1,0 +1,70 @@
+.card {
+    width: 60px;
+    height: 90px;
+}
+
+.solved-card:hover {
+    background-color: #82dc7c;
+}
+
+.card:hover {
+    transform: scale(1.1);
+    background-color: #8ed3d5;
+}
+
+#card-container {
+    width: 65vw;
+}
+
+.card-grid {
+    width: 65vw;
+    background-color: whitesmoke;
+    border-radius: 15px;
+}
+
+.heart {
+    width: 25px;
+    height: 25px;
+    padding: 1px;
+}
+
+.broken {
+    filter: hue-rotate(180deg);
+}
+
+.blurred {
+    filter: blur(5px);
+}
+
+#blurscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    z-index: 10;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.blurbutton {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 240px;
+    height: 50px;
+    text-align: center;
+    font-size: 20px;
+    border-radius: 15px;
+    background-color: white;
+    border: solid white 1px;
+    margin: 10px;
+}

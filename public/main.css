@@ -12,7 +12,6 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
     padding: 60px;
 }
 
@@ -29,28 +28,22 @@ p {
 .title {
     padding: 0 20px;
 }
+
 .card {
     background-color: cadetblue;
-    width: 80px;
-    height: 120px;
+    width: 50px;
+    height: 69px;
     display: flex;
     justify-content: center;
     text-align: center;
     align-items: center;
     border-radius: 15px;
-    float: left;
-    margin: 10px;
     transform-style: preserve-3d;
     font-size: 50px;
 }
 
-.solved-card, .solved-card:hover {
+.solved-card {
     background-color: #82dc7c;
-}
-
-.card:hover {
-    transform: scale(1.1);
-    background-color: #8ed3d5;
 }
 
 @keyframes card-flip {
@@ -66,71 +59,63 @@ p {
 }
 
 #card-container {
-    width: 55vw;
+    width: 95vw;
     height: 70vh;
     background-color: whitesmoke;
     border-radius: 15px;
 }
 
 .card-grid {
-    width: 55vw;
+    width: 90vw;
     background-color: whitesmoke;
     border-radius: 15px;
-}
-
-.border-cell {
-    border: 3px solid black;
-    width: 40px;
-    height: 40px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3px;
 }
 
 .heart-container {
-    position: absolute;
+    margin: 10px 0;
     display: flex;
-    gap: 2px;
-    justify-content: center;
     align-items: center;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 .options {
     width: 100%;
     height: 10%;
     display: flex;
-    padding: 10px;
+    align-items: center;
     grid-template-columns: 1fr auto 1fr;
-}
-
-.buttons {
-    display: flex;
+    flex-direction: column;
 }
 
 .optionClass {
     width: 100%;
-    margin: 0 5px;
+    margin: 10px 0;
+    padding: 10px;
     border-color: white;
     border-radius: 10px;
     background-color: white;
     font-size: 12px;
-    justify-self: start;
     cursor: pointer;
 }
 
 #restartGameButton {
     width: 100%;
-    margin: 0 5px;
+    margin: 10px 0;
+    padding: 10px;
     border-color: white;
     border-radius: 10px;
     background-color: white;
     font-size: 12px;
-    justify-self: start;
     cursor: pointer;
 }
 
 .heart {
-    width: 25px;
-    height: 25px;
+    width: 15px;
+    height: 15px;
     padding: 1px;
 }
 
