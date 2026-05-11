@@ -103,6 +103,7 @@ function cardClick(id){
             setCardSolved(selected[0]);
             setCardSolved(selected[1]);
             selected = [-1, -1];
+            post("cardSolved");
         }
 
         if(solvedPairs.sort().join("") === deckOfCards.sort().join("")) {
@@ -130,8 +131,10 @@ function resetGame() {
 }
 
 function levelDone() {
+    post("levelCompleted")
     document.getElementById("card-container").classList.add("blurred");
     document.getElementById("blurscreen").classList.remove("hidden");
+
 }
 
 function nextLevel() {

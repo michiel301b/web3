@@ -27,13 +27,29 @@ p {
     animation: glow 1.5s infinite alternate;
 }
 
+.currencies {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    color: white;
+}
+
+.gold-text {
+    color: white;
+    font-size: 16px;
+}
+
+.xp-text {
+    color: white;
+    font-size: 16px;
+}
 
 .homepage-buttons {
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    height: 80vh;
+    height: 60vh;
 }
 
 .homepage-button {

@@ -13,6 +13,14 @@
 <body>
 <div class="homepage-container">
     <h1 class="hometitle">Memory Roguelite V1.01</h1>
+    <div class="currencies">
+        <div class="gold">
+            <p class="gold-text">0 🪙</p>
+        </div>
+        <div class="xp">
+            <p class="xp-text">XP Total: 1⭐</p>
+        </div>
+    </div>
     <div class="homepage-buttons">
     <button class="homepage-button" onclick="window.location.href='../Templates/main_game.html'">Play</button>
     <button class="homepage-button" >Delete savefile</button>
@@ -24,3 +32,9 @@
 </div>
 </body>
 </html>
+<script>
+    const gold = parseInt(localStorage.getItem("gold") || 0);
+    document.getElementsByClassName("gold-text")[0].textContent = `${gold} Gold 🪙`
+    const xp = parseInt(localStorage.getItem("xp") || 0);
+    document.getElementsByClassName("xp-text")[0].textContent = `${xp} XP ⭐`
+</script>

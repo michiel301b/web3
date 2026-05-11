@@ -16,12 +16,20 @@ body {
     font-size: 60px;
 }
 
+.gold-text {
+    font-size: 50px;
+}
+
+.xp-text {
+    font-size: 50px;
+}
+
 .homepage-buttons {
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    height: 75vh;
+    height: 60vh;
 }
 
 .homepage-button {
