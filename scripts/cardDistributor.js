@@ -6,7 +6,7 @@ let selected = [-1, -1]
 let shuffledDeckOfCards = []
 let solvedPairs = []
 let uiLocked = false
-let maxLives = 10
+let maxLives = 12
 let livesLeft = maxLives
 
 function shuffleDeckOfCards(deckOfCards) {
@@ -16,6 +16,26 @@ function shuffleDeckOfCards(deckOfCards) {
         [shuffledDeckOfCards[i], shuffledDeckOfCards[j]] = [shuffledDeckOfCards[j], shuffledDeckOfCards[i]];
     }
     return shuffledDeckOfCards;
+}
+
+function generateHearts() {
+    let heartcontainer = document.getElementsByClassName("heart-container")[0];
+    const visible = Math.min(maxLives, 10);
+    for (let i = 0; i < visible; i++) {
+        const heart = document.createElement("img");
+        heart.id = `heart${i}`;
+        heart.className = "heart";
+        heart.src = "https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png";
+        heart.alt = "heart icon"
+        heartcontainer.appendChild(heart);
+    }
+
+    if (maxLives > 10) {
+        const extra = document.createElement("span")
+        extra.id = "extra"
+        extra.textContent = `+${maxLives - 10}`
+        heartcontainer.appendChild(extra)
+    }
 }
 
 function generateCardHtml(){
@@ -37,6 +57,7 @@ function startGame() {
         deckOfCards.push(standardPossibleCards[deckOfCards.length]);
     }
     generateCardHtml();
+    generateHearts();
     document.getElementById("startGameButton").classList.add("hidden")
     document.getElementById("restartGameButton").classList.remove("hidden");
 }
@@ -97,6 +118,7 @@ function endGame() {
 
 function resetGame() {
     document.getElementById("card-holder").innerHTML = "";
+    document.getElementsByClassName("heart-container")[0].innerHTML = "";
     deckOfCards = [];
     solvedPairs = [];
     selected = [-1, -1];
@@ -149,6 +171,15 @@ function setCardSolved(cardId){
 
 function breakHeart() {
     livesLeft -= 1;
+    if (livesLeft > 10) {
+        let text = document.getElementById("extra");
+        text.textContent = `+${livesLeft - 10}`
+        return
+    }
+    if (maxLives > 10 && livesLeft === 10) {
+        let text = document.getElementById("extra");
+        text.remove()
+    }
     let breakingHeart = document.getElementById("heart"+livesLeft);
     if (breakingHeart){
         breakingHeart.className += " broken";
