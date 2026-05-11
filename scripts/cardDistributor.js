@@ -20,7 +20,7 @@ function shuffleDeckOfCards(deckOfCards) {
 
 function generateHearts() {
     let heartcontainer = document.getElementsByClassName("heart-container")[0];
-    const visible = Math.min(maxLives, 10);
+    const visible = Math.min(livesLeft, 10);
     for (let i = 0; i < visible; i++) {
         const heart = document.createElement("img");
         heart.id = `heart${i}`;
@@ -33,7 +33,7 @@ function generateHearts() {
     if (maxLives > 10) {
         const extra = document.createElement("span")
         extra.id = "extra"
-        extra.textContent = `+${maxLives - 10}`
+        extra.textContent = `+${livesLeft - 10}`
         heartcontainer.appendChild(extra)
     }
 }
@@ -64,6 +64,7 @@ function startGame() {
 
 function resetLevel() {
     document.getElementById("card-holder").innerHTML = "";
+    document.getElementsByClassName("heart-container")[0].innerHTML = "";
     solvedPairs = [];
     selected = [-1, -1];
     uiLocked = false;
