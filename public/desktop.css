@@ -24,12 +24,34 @@ body {
     font-size: 50px;
 }
 
+.level-text {
+    font-size: 50px;
+}
+
+.currenciesgame {
+    margin-top: -10px;
+}
+.gold-text-game {
+    color: white;
+    font-size: 24px;
+}
+
+.xp-text-game {
+    color: white;
+    font-size: 24px;
+}
+
+.level-text-game {
+    color: white;
+    font-size: 24px;
+}
+
 .homepage-buttons {
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    height: 60vh;
+    height: 50vh;
 }
 
 .homepage-button {

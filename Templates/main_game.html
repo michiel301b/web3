@@ -9,13 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/main.css">
     <link rel="stylesheet" media="screen and (orientation: landscape)" href="../public/desktop.css">
-    <script src="/scripts/eventbus.js"></script>
-    <script src="/scripts/gold.js"></script>
-    <script src="/scripts/xp.js"></script>
 </head>
 <body>
 <div class="topbar">
-    <h2 class="title">Memory Roguelite V1</h2>
+    <div class="currenciesgame">
+        <div class="gold">
+            <p class="gold-text-game">0 🪙</p>
+        </div>
+        <div class="xp">
+            <p class="xp-text-game">XP Total: 1⭐</p>
+        </div>
+        <p class="level-text-game">Level: 1 🚀</p>
+    </div>
 </div>
 <div class="body-container">
     <div id="card-container">
@@ -42,9 +47,22 @@
         <button class="blurbutton" id="confirm-choice">Go to next level</button>
         <button class="blurbutton" id="end-game-button">End game</button>
     </div>
+    <div id="levelup-screen" class="hidden">
+        <h1> Congrats, you leveled up!</h1>
+        <button class="blurbutton" id="continue-game-button">Continue</button>
+    </div>
 </div>
-
+<script src="/scripts/eventbus.js"></script>
+<script src="/scripts/gold.js"></script>
+<script src="/scripts/xp.js"></script>
 <script src="/scripts/cardDistributor.js"></script>
-
+<script>
+    const displaygold = parseInt(localStorage.getItem("gold") || 0);
+    document.getElementsByClassName("gold-text-game")[0].textContent = `${displaygold} Gold 🪙`
+    const displayxp = parseInt(localStorage.getItem("xp") || 0);
+    document.getElementsByClassName("xp-text-game")[0].textContent = `${displayxp} XP ⭐`
+    const displaylevel = parseInt(localStorage.getItem("level") || 1);
+    document.getElementsByClassName("level-text-game")[0].textContent = `Level: ${displaylevel} 🚀`
+</script>
 </body>
 </html>

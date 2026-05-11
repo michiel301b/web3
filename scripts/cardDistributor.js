@@ -14,6 +14,12 @@ let livesLeft = maxLives
 function initEventListeners() {
     document.getElementById("confirm-choice").addEventListener("click", nextLevel)
     document.getElementById("end-game-button").addEventListener("click", endGame)
+    on("levelUp", () => {
+        document.getElementsByClassName("level-text-game")[0].classList.add("levelup");
+        setTimeout(() => {
+            document.getElementsByClassName("level-text-game")[0].classList.remove("levelup");
+        }, 10000);
+    })
 }
 
 function shuffleDeckOfCards(deckOfCards) {
@@ -37,7 +43,7 @@ function generateHearts() {
         heartcontainer.appendChild(heart);
     }
 
-    if (maxLives > 10) {
+    if (livesLeft > 10) {
         const extra = document.createElement("span")
         extra.id = "extra"
         extra.textContent = `+${livesLeft - 10}`
@@ -80,7 +86,6 @@ function saveStuff(obj) {
 function loadStuff() {
     return saveData.obj || "default";
 }
-
 
 function startGame() {
     if (deckSize === 0) {
@@ -198,8 +203,6 @@ function levelDone() {
         cardSelector.appendChild(label);
 
     }
-
-
     post("levelCompleted")
     document.getElementById("card-container").classList.add("blurred");
     document.getElementById("blurscreen").classList.remove("hidden");

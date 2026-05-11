@@ -21,6 +21,9 @@
             <p class="xp-text">XP Total: 1⭐</p>
         </div>
     </div>
+    <div class="level">
+        <p class="level-text">Level: 1 🚀</p>
+    </div>
     <div class="homepage-buttons">
     <button class="homepage-button" onclick="window.location.href='../Templates/main_game.html'">Play</button>
     <button class="homepage-button" >Delete savefile</button>
@@ -37,4 +40,6 @@
     document.getElementsByClassName("gold-text")[0].textContent = `${gold} Gold 🪙`
     const xp = parseInt(localStorage.getItem("xp") || 0);
     document.getElementsByClassName("xp-text")[0].textContent = `${xp} XP ⭐`
+    const level = parseInt(localStorage.getItem("level") || 1);
+    document.getElementsByClassName("level-text")[0].textContent = `Level: ${level} 🚀`
 </script>
