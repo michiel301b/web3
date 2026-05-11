@@ -8,9 +8,8 @@ let selected = [-1, -1]
 let shuffledDeckOfCards = []
 let solvedPairs = []
 let uiLocked = false
-let maxLives = 12
+let maxLives = 9 + (loadStuff().level || 1);
 let livesLeft = maxLives
-
 function initEventListeners() {
     document.getElementById("confirm-choice").addEventListener("click", nextLevel)
     document.getElementById("end-game-button").addEventListener("click", endGame)
@@ -69,22 +68,6 @@ function generateCardHtml(){
         card.appendChild(p);
         cardholder.appendChild(card);
     }
-}
-
-// Retrieve your data from locaStorage
-var saveData = JSON.parse(localStorage.saveData || null) || {};
-
-// Store your data.
-function saveStuff(obj) {
-    saveData.obj = obj;
-    // saveData.foo = foo;
-    saveData.time = new Date().getTime();
-    localStorage.saveData = JSON.stringify(saveData);
-}
-
-// Do something with your data.
-function loadStuff() {
-    return saveData.obj || "default";
 }
 
 function startGame() {

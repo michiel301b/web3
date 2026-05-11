@@ -1,16 +1,16 @@
-let xp = parseInt(localStorage.getItem("xp") || 0);
-let level = parseInt(localStorage.getItem("level") || "1");
+let xp = loadStuff().xp || 0
+let level = loadStuff().level || 0;
 
 on("cardSolved", () => {
     xp += 10;
-    localStorage.setItem("xp", xp)
+    saveStuff({ xp })
     checkIfNewLevel()
     document.getElementsByClassName("xp-text-game")[0].textContent = `${xp} XP ⭐`
 })
 
 on("levelCompleted", () => {
     xp += 50;
-    localStorage.setItem("xp", xp)
+    saveStuff({ xp })
     checkIfNewLevel()
     document.getElementsByClassName("xp-text-game")[0].textContent = `${xp} XP ⭐`
 });
@@ -38,25 +38,24 @@ const levels = {
 }
 
 function setXP0() {
-    localStorage.setItem("xp", "0");
-    localStorage.setItem("level", "1");
     xp = 0;
     level = 1;
+    saveStuff({ xp, level })
 }
 function getXP() {
-    return localStorage.getItem("xp") || "0";
+    return loadStuff().xp || 0
 }
 
 function getLevel() {
-    return localStorage.getItem("level") || "1"
+    return loadStuff().level || 1;
 }
 
 function checkIfNewLevel() {
-    const previous = parseInt(localStorage.getItem("level") || "1");
+    const previous = loadStuff().level || 1;
     const current = checkLevel();
     if (current > previous) {
-        localStorage.setItem("level", current.toString())
         level = current
+        saveStuff({ level })
         document.getElementsByClassName("level-text-game")[0].textContent = `Level: ${current} 🚀`
         post("levelUp")
         return true

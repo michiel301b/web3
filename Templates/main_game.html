@@ -53,16 +53,15 @@
     </div>
 </div>
 <script src="/scripts/eventbus.js"></script>
+<script src="/scripts/data.js"></script>
 <script src="/scripts/gold.js"></script>
 <script src="/scripts/xp.js"></script>
 <script src="/scripts/cardDistributor.js"></script>
 <script>
-    const displaygold = parseInt(localStorage.getItem("gold") || 0);
-    document.getElementsByClassName("gold-text-game")[0].textContent = `${displaygold} Gold 🪙`
-    const displayxp = parseInt(localStorage.getItem("xp") || 0);
-    document.getElementsByClassName("xp-text-game")[0].textContent = `${displayxp} XP ⭐`
-    const displaylevel = parseInt(localStorage.getItem("level") || 1);
-    document.getElementsByClassName("level-text-game")[0].textContent = `Level: ${displaylevel} 🚀`
+    const displaydata = loadStuff();
+    document.getElementsByClassName("gold-text-game")[0].textContent = `${displaydata.gold} Gold 🪙`
+    document.getElementsByClassName("xp-text-game")[0].textContent = `${displaydata.xp} XP ⭐`
+    document.getElementsByClassName("level-text-game")[0].textContent = `Level: ${displaydata.level} 🚀`
 </script>
 </body>
 </html>
