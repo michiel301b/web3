@@ -97,6 +97,7 @@ p {
     align-items: center;
     border-radius: 15px;
     transform-style: preserve-3d;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     font-size: 50px;
 }
 
@@ -219,4 +220,44 @@ p {
     background-color: white;
     border: solid white 1px;
     margin: 10px;
+}
+
+#level-complete-card-selector {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-selector {
+    display: none;
+}
+
+.card-selector-label {
+    width: 120px;
+    height: 160px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 15px;
+    background-color: cadetblue;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    font-size: 24px;
+    font-weight: bold;
+
+    cursor: pointer;
+    user-select: none;
+
+    transition:
+            transform 0.15s ease,
+            background-color 0.15s ease,
+            border-color 0.15s ease;
+}
+
+.card-selector:checked + .card-selector-label {
+    background-color: #82dc7c;
+    transform: scale(1.05);
 }

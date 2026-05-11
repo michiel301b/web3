@@ -1,6 +1,8 @@
 let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"];
+let endLevelPossibleCards = ["α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω"]
 let deckOfCards = []
-const STARTING_DECK_SIZE = 4;
+const STARTING_DECK_SIZE = 2;
+let endLevelCardAmount = 3;
 let deckSize = 0;
 let selected = [-1, -1]
 let shuffledDeckOfCards = []
@@ -8,6 +10,11 @@ let solvedPairs = []
 let uiLocked = false
 let maxLives = 12
 let livesLeft = maxLives
+
+function initEventListeners() {
+    document.getElementById("confirm-choice").addEventListener("click", nextLevel)
+    document.getElementById("end-game-button").addEventListener("click", endGame)
+}
 
 function shuffleDeckOfCards(deckOfCards) {
     shuffledDeckOfCards = deckOfCards.concat(deckOfCards)
@@ -43,15 +50,42 @@ function generateCardHtml(){
     console.log(shuffledDeckOfCards);
     let cardholder = document.getElementById("card-holder");
     for (let i = 0; i < shuffledDeckOfCards.length; i++) {
-        cardholder.innerHTML += "<div class='card' onclick='cardClick(id)' id='card-"+i+"'>" +
-            "<p></p>" +
-            "</div>";
+
+        let card = document.createElement("div");
+        card.classList.add("card");
+        card.id = "card-" + i;
+
+        card.addEventListener("click",  () => {
+            cardClick(card.id);
+        });
+
+        let p = document.createElement("p");
+        card.appendChild(p);
+        cardholder.appendChild(card);
     }
 }
+
+// Retrieve your data from locaStorage
+var saveData = JSON.parse(localStorage.saveData || null) || {};
+
+// Store your data.
+function saveStuff(obj) {
+    saveData.obj = obj;
+    // saveData.foo = foo;
+    saveData.time = new Date().getTime();
+    localStorage.saveData = JSON.stringify(saveData);
+}
+
+// Do something with your data.
+function loadStuff() {
+    return saveData.obj || "default";
+}
+
 
 function startGame() {
     if (deckSize === 0) {
         deckSize = STARTING_DECK_SIZE
+        deckOfCards = []
     }
     while(deckOfCards.length < deckSize) {
         deckOfCards.push(standardPossibleCards[deckOfCards.length]);
@@ -68,7 +102,19 @@ function resetLevel() {
     solvedPairs = [];
     selected = [-1, -1];
     uiLocked = false;
-    deckSize += 1;
+    //deckSize += 1;
+    startGame();
+}
+
+function resetGame() {
+    document.getElementById("card-holder").innerHTML = "";
+    document.getElementsByClassName("heart-container")[0].innerHTML = "";
+    deckOfCards = [];
+    solvedPairs = [];
+    selected = [-1, -1];
+    uiLocked = false;
+    deckSize = 0;
+    healAllHearts();
     startGame();
 }
 
@@ -77,7 +123,7 @@ function cardClick(id){
         return;
     }
     let cardId = id.slice(5) // removes "card-" from the element id
-    console.log("clicked", cardId, ", selected = ", selected);
+    console.log("clicked" + cardId + ", selected = " + selected);
     if (cardId === selected[0] || cardId === selected[1]) {
         return;
     }else if (selected[0] === -1) {
@@ -90,8 +136,8 @@ function cardClick(id){
     console.log("flipped card " + cardId + ", selected = " + selected);
     if (selected[1] >= 0) {
         let checkMatchResult = checkMatch()
+        uiLocked = true;
         if (checkMatchResult === ""){
-            uiLocked = true;
             setTimeout(function(){resetCard(selected[0]);
                 resetCard(selected[1]);
                 breakHeart()
@@ -104,6 +150,7 @@ function cardClick(id){
             setCardSolved(selected[1]);
             selected = [-1, -1];
             post("cardSolved");
+            setTimeout(function(){uiLocked = false}, 400);
         }
 
         if(solvedPairs.sort().join("") === deckOfCards.sort().join("")) {
@@ -118,19 +165,41 @@ function endGame() {
         window.location.href = "home_page.html",1);
 }
 
-function resetGame() {
-    document.getElementById("card-holder").innerHTML = "";
-    document.getElementsByClassName("heart-container")[0].innerHTML = "";
-    deckOfCards = [];
-    solvedPairs = [];
-    selected = [-1, -1];
-    uiLocked = false;
-    deckSize = 0;
-    livesLeft = maxLives;
-    startGame();
-}
-
 function levelDone() {
+    let cardSelector = document.getElementById("level-complete-card-selector")
+    cardSelector.innerHTML = "";
+    let indexListOfNewCards = []
+    for (let i = 0; i < endLevelCardAmount; i++) {
+        let randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length)
+        while (indexListOfNewCards.includes(endLevelPossibleCards[randomIndex])){
+            randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length);
+        }
+        indexListOfNewCards[i] = randomIndex;
+        let card = document.createElement("input");
+        card.classList.add("card");
+        card.id = "selector-card-" + indexListOfNewCards[i];
+        card.type = "radio";
+        card.name = "card-selector";
+        card.classList.add("card-selector");
+
+        let label = document.createElement("label");
+        label.htmlFor = "selector-card-" + indexListOfNewCards[i];
+        label.classList.add("card-selector-label");
+        label.innerText = endLevelPossibleCards[indexListOfNewCards[i]];
+
+
+        card.addEventListener("change", (event)=> {
+            console.log("clicked" + event.target.id);
+            let explanation = document.getElementById("level-complete-card-explanation");
+            explanation.innerText = event.target.value;
+        })
+
+        cardSelector.appendChild(card);
+        cardSelector.appendChild(label);
+
+    }
+
+
     post("levelCompleted")
     document.getElementById("card-container").classList.add("blurred");
     document.getElementById("blurscreen").classList.remove("hidden");
@@ -140,6 +209,11 @@ function levelDone() {
 function nextLevel() {
     document.getElementById("card-container").classList.remove("blurred");
     document.getElementById("blurscreen").classList.add("hidden");
+    let selectedCard = document.querySelector('input[name="card-selector"]:checked');
+    console.log(selectedCard.id)
+    let temp = endLevelPossibleCards.splice(selectedCard.id.slice(14),1)
+
+    deckOfCards.push(temp[0])
     resetLevel();
 }
 
@@ -206,3 +280,5 @@ function healHeart() {
     livesLeft += 1;
     heartToHeal.classList.remove("broken");
 }
+
+initEventListeners()

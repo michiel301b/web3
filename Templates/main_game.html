@@ -9,7 +9,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../public/main.css">
     <link rel="stylesheet" media="screen and (orientation: landscape)" href="../public/desktop.css">
-    <script src="/scripts/cardDistributor.js"></script>
     <script src="/scripts/eventbus.js"></script>
     <script src="/scripts/gold.js"></script>
     <script src="/scripts/xp.js"></script>
@@ -22,16 +21,6 @@
     <div id="card-container">
         <div class="options">
             <div id="heart-holder" class="heart-container">
-<!--                <img id="heart0" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart1" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart2" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart3" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart4" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart5" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart6" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart7" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart8" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
-<!--                <img id="heart9" class="heart" src="https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png" alt="heart icon">-->
             </div>
             <div class="buttons">
                 <button id="startGameButton" class="optionClass" onclick="startGame()">Start Game</button>
@@ -42,11 +31,20 @@
             <div></div>
         </div>
     </div>
+
     <div id="blurscreen" class="hidden">
         <h2>Level complete!</h2>
-        <button class="blurbutton" onclick="nextLevel()">Go to next level</button>
-        <button class="blurbutton" onclick="endGame()">End game</button>
+        <h2>Pick a new card!</h2>
+        <div id="level-complete-card-selector">
+
+        </div>
+        <h2 id="level-complete-card-explanation">Select a card to see what it will do.</h2>
+        <button class="blurbutton" id="confirm-choice">Go to next level</button>
+        <button class="blurbutton" id="end-game-button">End game</button>
     </div>
 </div>
+
+<script src="/scripts/cardDistributor.js"></script>
+
 </body>
 </html>
