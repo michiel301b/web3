@@ -1,6 +1,37 @@
+body {
+    min-height: 100vh;
+    margin: 0;
+    background-image: url("images/bg2.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 .card {
     width: 60px;
     height: 90px;
+}
+
+.hometitle {
+    font-size: 60px;
+}
+
+.homepage-buttons {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 75vh;
+}
+
+.homepage-button {
+    background-color: white;
+    border: solid white 1px;
+    margin: 10px 0;
+    border-radius: 12px;
+    width: 500px;
+    height: 75px;
+    font-size: 32px;
 }
 
 .solved-card:hover {
@@ -18,8 +49,12 @@
 
 .card-grid {
     width: 65vw;
-    background-color: whitesmoke;
     border-radius: 15px;
+    margin-top: 10vh;
+}
+
+.title {
+    font-size: 20px;
 }
 
 .heart {
