@@ -32,13 +32,15 @@ function shuffleDeckOfCards(deckOfCards) {
 
 function generateHearts() {
     let heartcontainer = document.getElementsByClassName("heart-container")[0];
-    const visible = Math.min(livesLeft, 10);
-    for (let i = 0; i < visible; i++) {
+    for (let i = 0; i < 10; i++) {
         const heart = document.createElement("img");
         heart.id = `heart${i}`;
         heart.className = "heart";
         heart.src = "https://pics.clipartpng.com/midle/Heart_Shape_PNG_Clipart-3166.png";
         heart.alt = "heart icon"
+        if (i + 1 > livesLeft) {
+            heart.classList.add("broken");
+        }
         heartcontainer.appendChild(heart);
     }
 
