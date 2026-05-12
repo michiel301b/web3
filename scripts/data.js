@@ -11,5 +11,9 @@ function saveStuff(obj) {
 
 // Do something with your data.
 function loadStuff() {
-    return saveData.obj || "default";
+    return saveData.obj || {
+        gold: 0,
+        xp: 0,
+        level: 1
+    }
 }
