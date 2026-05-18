@@ -1,5 +1,10 @@
-let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"];
-let endLevelPossibleCards = ["α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω"]
+import {addSvg, getCardExplanations} from "/web3/scripts/cardExplanations.js";
+
+
+
+//let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"];
+//let endLevelPossibleCards = ["α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω"]
+let selectedEndLevelCard = {}
 let deckOfCards = []
 const STARTING_DECK_SIZE = 2;
 let endLevelCardAmount = 3;
@@ -10,9 +15,34 @@ let solvedPairs = []
 let uiLocked = false
 let maxLives = 9 + (loadStuff().level || 1);
 let livesLeft = maxLives
+
+
+async function fetchIcons() {
+    const allCards = getCardExplanations()
+    let cards = []
+    for (let item of allCards) {
+        cards.push(item)
+    }
+    return await Promise.all(
+        cards.map(async (card) => {
+            const res = await fetch(card.imgSrc)
+                .then(res => res.text())
+            addSvg(card.card, res)
+            return res
+        })
+    )
+}
+
+fetchIcons()
+
+
+
+
+
 function initEventListeners() {
     document.getElementById("confirm-choice").addEventListener("click", nextLevel)
     document.getElementById("end-game-button").addEventListener("click", endGame)
+    document.getElementById("startGameButton").addEventListener("click", startGame)
     on("levelUp", () => {
         document.getElementsByClassName("level-text-game")[0].classList.add("levelup");
         setTimeout(() => {
@@ -70,6 +100,8 @@ function generateCardHtml(){
         card.appendChild(p);
         cardholder.appendChild(card);
     }
+
+
 }
 
 function startGame() {
@@ -78,7 +110,8 @@ function startGame() {
         deckOfCards = []
     }
     while(deckOfCards.length < deckSize) {
-        deckOfCards.push(standardPossibleCards[deckOfCards.length]);
+        let normalCards = getCardExplanations().filter(card => card.type === "normal");
+        deckOfCards.push(normalCards[deckOfCards.length]);
     }
     generateCardHtml();
     generateHearts();
@@ -159,6 +192,7 @@ function levelDone() {
     let cardSelector = document.getElementById("level-complete-card-selector")
     cardSelector.innerHTML = "";
     let indexListOfNewCards = []
+    let endLevelPossibleCards = getCardExplanations().filter(card => card.type === "special");
     for (let i = 0; i < endLevelCardAmount; i++) {
         let randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length)
         while (indexListOfNewCards.includes(endLevelPossibleCards[randomIndex])){
@@ -175,13 +209,14 @@ function levelDone() {
         let label = document.createElement("label");
         label.htmlFor = "selector-card-" + indexListOfNewCards[i];
         label.classList.add("card-selector-label");
-        label.innerText = endLevelPossibleCards[indexListOfNewCards[i]];
+        label.innerHTML = endLevelPossibleCards[indexListOfNewCards[i]].svgSrc;
 
 
         card.addEventListener("change", (event)=> {
             console.log("clicked" + event.target.id);
             let explanation = document.getElementById("level-complete-card-explanation");
-            explanation.innerText = event.target.value;
+            explanation.innerText = endLevelPossibleCards[indexListOfNewCards[i]].description;
+            selectedEndLevelCard = endLevelPossibleCards[indexListOfNewCards[i]]
         })
 
         cardSelector.appendChild(card);
@@ -197,11 +232,7 @@ function levelDone() {
 function nextLevel() {
     document.getElementById("card-container").classList.remove("blurred");
     document.getElementById("blurscreen").classList.add("hidden");
-    let selectedCard = document.querySelector('input[name="card-selector"]:checked');
-    console.log(selectedCard.id)
-    let temp = endLevelPossibleCards.splice(selectedCard.id.slice(14),1)
-
-    deckOfCards.push(temp[0])
+    deckOfCards.push(selectedEndLevelCard)
     resetLevel();
 }
 
@@ -219,7 +250,7 @@ function flipCard(id, cardId){
     cardElement.style.animation = "none";
     cardElement.offsetHeight; //You apparently need this otherwise it will optimize the animation away
     cardElement.style.animation = "card-flip 0.8s ease-in-out forwards";
-    setTimeout(function(){cardElement.innerHTML = "<p>"+shuffledDeckOfCards[cardId]+"</p>"},400);
+    setTimeout(function(){cardElement.innerHTML = shuffledDeckOfCards[cardId].svgSrc},400);
 }
 
 function resetCard(cardId){
