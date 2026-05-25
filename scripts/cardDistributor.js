@@ -42,6 +42,7 @@ fetchIcons()
 function initEventListeners() {
     document.getElementById("confirm-choice").addEventListener("click", nextLevel)
     document.getElementById("end-game-button").addEventListener("click", endGame)
+    document.getElementById("restartGameButton").addEventListener("click", resetGame)
     document.getElementById("startGameButton").addEventListener("click", startGame)
     on("levelUp", () => {
         document.getElementsByClassName("level-text-game")[0].classList.add("levelup");
@@ -146,7 +147,6 @@ function cardClick(id){
         return;
     }
     let cardId = id.slice(5) // removes "card-" from the element id
-    console.log("clicked" + cardId + ", selected = " + selected);
     if (cardId === selected[0] || cardId === selected[1]) {
         return;
     }else if (selected[0] === -1) {
@@ -156,7 +156,6 @@ function cardClick(id){
         selected[1] = cardId;
     }
     flipCard(id, cardId);
-    console.log("flipped card " + cardId + ", selected = " + selected);
     if (selected[1] >= 0) {
         let checkMatchResult = checkMatch()
         uiLocked = true;
@@ -189,13 +188,15 @@ function endGame() {
 }
 
 function levelDone() {
-    let cardSelector = document.getElementById("level-complete-card-selector")
+    let cardSelector = document.getElementById("level-complete-card-selector");
+    document.getElementById("level-complete-card-explanation").innerText = "";
     cardSelector.innerHTML = "";
     let indexListOfNewCards = []
-    let endLevelPossibleCards = getCardExplanations().filter(card => card.type === "special");
+    let endLevelPossibleCards = getCardExplanations("","special");
     for (let i = 0; i < endLevelCardAmount; i++) {
         let randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length)
-        while (indexListOfNewCards.includes(endLevelPossibleCards[randomIndex])){
+        console.log("card: "+endLevelPossibleCards[randomIndex].card+", bool= " + deckOfCards.includes(endLevelPossibleCards[randomIndex]));
+        while (indexListOfNewCards.includes(randomIndex) || deckOfCards.includes(endLevelPossibleCards[randomIndex])) {
             randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length);
         }
         indexListOfNewCards[i] = randomIndex;
@@ -213,7 +214,6 @@ function levelDone() {
 
 
         card.addEventListener("change", (event)=> {
-            console.log("clicked" + event.target.id);
             let explanation = document.getElementById("level-complete-card-explanation");
             explanation.innerText = endLevelPossibleCards[indexListOfNewCards[i]].description;
             selectedEndLevelCard = endLevelPossibleCards[indexListOfNewCards[i]]
