@@ -2,18 +2,23 @@ let xp = loadStuff().xp || 0
 let level = loadStuff().level || 0;
 
 on("cardSolved", () => {
-    xp += 10;
-    saveStuff({ xp })
-    checkIfNewLevel()
-    document.getElementsByClassName("xp-text-game")[0].textContent = `${xp} XP ⭐`
+    updateXP(10)
+})
+
+on("bonusXP", () => {
+    updateXP(5)
 })
 
 on("levelCompleted", () => {
-    xp += 50;
+    updateXP(50)
+})
+
+function updateXP(deltaXP) {
+    xp += deltaXP;
     saveStuff({ xp })
     checkIfNewLevel()
     document.getElementsByClassName("xp-text-game")[0].textContent = `${xp} XP ⭐`
-});
+}
 
 const levels = {
     2: 10,

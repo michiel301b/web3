@@ -42,8 +42,9 @@ export function getCardExplanation(card) {
     return cardExplanations.find(item => item.card === card)
 }
 
-export function setcallback(card,callback){
+export function setCallback(card,callback,moment="onpair"){
     cardExplanations.find(item => item.card === card).callback = callback;
+    cardExplanations.find(item => item.card === card).callbackMoment = moment;
 }
 
 export function addSvg(card, svgSrc){

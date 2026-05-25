@@ -1,4 +1,4 @@
-import {addSvg, getCardExplanations} from "/web3/scripts/cardExplanations.js";
+import {addSvg, getCardExplanations,setCallback,getCardExplanation} from "/web3/scripts/cardExplanations.js";
 
 
 
@@ -35,7 +35,16 @@ async function fetchIcons() {
 
 fetchIcons()
 
+function setAllCallbackFuntions(){
+    setCallback("Heart",() => {healHeart();healHeart()},"onpair");
+    setCallback("Hollow-Heart",() => healHeart(),"onpair");
+    setCallback("Star",() => {post("bonusXP"); post("bonusXP")},"onpair");
+    setCallback("Hollow-Star",() => post("bonusXP"),"onpair");
+    setCallback("Duplicate",() => deckOfCards.push(getCardExplanation("Duplicate")),"onselect");
+    setCallback("Washing-Machine",shuffleUnsolvedCards(),"onpair");
+    setCallback("Shredder", ()=>{},"onpair");//todo)
 
+}
 
 
 
@@ -44,6 +53,7 @@ function initEventListeners() {
     document.getElementById("end-game-button").addEventListener("click", endGame)
     document.getElementById("restartGameButton").addEventListener("click", resetGame)
     document.getElementById("startGameButton").addEventListener("click", startGame)
+    document.getElementById("click").addEventListener("click", shuffleUnsolvedCards)
     on("levelUp", () => {
         document.getElementsByClassName("level-text-game")[0].classList.add("levelup");
         setTimeout(() => {
@@ -170,6 +180,12 @@ function cardClick(id){
             solvedPairs.push(checkMatchResult);
             setCardSolved(selected[0]);
             setCardSolved(selected[1]);
+            let second_card = getCardExplanation(shuffledDeckOfCards[selected[0]].card);
+            if (second_card.callbackMoment === "onpair") {
+                let callback = second_card.callback;
+                console.log("calling: "+callback);
+                callback();
+            }
             selected = [-1, -1];
             post("cardSolved");
             setTimeout(function(){uiLocked = false}, 400);
@@ -195,9 +211,18 @@ function levelDone() {
     let endLevelPossibleCards = getCardExplanations("","special");
     for (let i = 0; i < endLevelCardAmount; i++) {
         let randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length)
+        let attempts = 0
         console.log("card: "+endLevelPossibleCards[randomIndex].card+", bool= " + deckOfCards.includes(endLevelPossibleCards[randomIndex]));
         while (indexListOfNewCards.includes(randomIndex) || deckOfCards.includes(endLevelPossibleCards[randomIndex])) {
             randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length);
+            attempts++;
+            if (attempts >= 5) {
+                console.warn("Couldnt find any more special cards. added normals to endLevelPossibleCards")
+                console.log("elpc: ",endLevelPossibleCards)
+                endLevelPossibleCards += getCardExplanations("","normal");
+                console.log("elpc: ",endLevelPossibleCards)
+                attempts = -100
+            }
         }
         indexListOfNewCards[i] = randomIndex;
         let card = document.createElement("input");
@@ -237,7 +262,7 @@ function nextLevel() {
 }
 
 function checkMatch(){
-    if(shuffledDeckOfCards.length > 0){
+    if(shuffledDeckOfCards.length > 1){
         if(shuffledDeckOfCards[selected[0]] === shuffledDeckOfCards[selected[1]]){
             return shuffledDeckOfCards[selected[0]];
         }
@@ -268,6 +293,11 @@ function setCardSolved(cardId){
 
 function breakHeart() {
     livesLeft -= 1;
+    updateHeart()
+}
+
+function updateHeart(){
+    if (livesLeft > maxLives) livesLeft = maxLives;
     if (livesLeft > 10) {
         let text = document.getElementById("extra");
         text.textContent = `+${livesLeft - 10}`
@@ -277,13 +307,24 @@ function breakHeart() {
         let text = document.getElementById("extra");
         text.remove()
     }
-    let breakingHeart = document.getElementById("heart"+livesLeft);
-    if (breakingHeart){
-        breakingHeart.className += " broken";
+    if (livesLeft < 10) {
+        for (let i = 0; i <= 10; ++i) {
+            let breakingHeart = document.getElementById("heart"+livesLeft);
+            if (i > livesLeft) {
+                if (!breakingHeart.classList.contains("broken")){
+                    breakingHeart.className += " broken";
+                }
+            }
+            else{
+                if (breakingHeart.classList.contains("broken")){
+                    breakingHeart.classList.remove("broken");
+                }
+            }
+        }
     }
     if (livesLeft <= 0){
         setTimeout(function(){alert("Game Over");
-        window.location.href = "home_page.html";},1000);
+            window.location.href = "home_page.html";},1000);
     }
 }
 
@@ -294,10 +335,64 @@ function healAllHearts() {
 }
 
 function healHeart() {
-    if (livesLeft >= maxLives) return;
-    let heartToHeal = document.getElementById("heart"+livesLeft);
     livesLeft += 1;
-    heartToHeal.classList.remove("broken");
+    updateHeart();
 }
 
+function shuffleUnsolvedCards() {
+    const parent = document.querySelector(".card-grid");
+
+    const allCards = Array.from(parent.children).filter(c => c.classList.contains("card"));
+    const unsolvedCards = allCards.filter(c => !c.classList.contains("solved-card"));
+
+    if (unsolvedCards.length <= 1) return;
+
+    const first = new Map();
+    unsolvedCards.forEach(card => {
+        first.set(card, card.getBoundingClientRect());
+    });
+
+    for(let i = 0; i < allCards.length; i++) {
+        console.log("order: "+allCards[i].id);
+    }
+
+    const shuffled = [...unsolvedCards].sort(() => Math.random() - 0.5);
+
+    for(let i = 0; i < shuffled.length; i++) {
+        console.log("shuffled: "+shuffled[i].id);
+    }
+
+    const newOrder = [];
+    let u = 0;
+
+    allCards.forEach(card => {
+        card.style.animation = "none";
+        if (card.classList.contains("solved-card")) {
+            newOrder.push(card);
+        } else {
+            newOrder.push(shuffled[u++]);
+        }
+    });
+
+    newOrder.forEach(card => parent.appendChild(card));
+
+    unsolvedCards.forEach(card => {
+        const last = card.getBoundingClientRect();
+        const firstPos = first.get(card);
+
+        const dx = firstPos.left - last.left;
+        const dy = firstPos.top - last.top;
+
+        card.style.transition = "none";
+        card.style.transform = `translate(${dx}px, ${dy}px)`;
+
+        card.offsetHeight; // force reflow
+
+        card.style.transition = "transform 300ms ease";
+        card.style.transform = "translate(0, 0)";
+    });
+}
+
+
 initEventListeners()
+setAllCallbackFuntions()
