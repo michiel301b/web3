@@ -137,6 +137,48 @@ p {
     font-size: 50px;
 }
 
+.revealed-card {
+    background-color: palegoldenrod;
+}
+
+.sparkly {
+    position: relative;
+    overflow: hidden;
+}
+
+.sparkle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: white;
+    clip-path: polygon(
+            50% 0%,
+            60% 40%,
+            100% 50%,
+            60% 60%,
+            50% 100%,
+            40% 60%,
+            0% 50%,
+            40% 40%
+    );
+    animation: twinkle 1s forwards;
+}
+
+@keyframes twinkle {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
 .solved-card {
     background-color: #82dc7c;
 }
@@ -296,7 +338,7 @@ p {
     background-color: cadetblue;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
-    font-size: 24px;
+    font-size: 50px;
     font-weight: bold;
 
     cursor: pointer;

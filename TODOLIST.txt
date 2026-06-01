@@ -1,0 +1,15 @@
+must:
+ connect to databae
+ inloggen en zo
+ implement powerups (shop)
+ user settings (color n stuf)
+ change grid behavior (for powerups n magnets n stuf)
+ refactor (clean up code)
+
+
+should
+ add more special cards
+
+could:
+ characters with powerups
+ implement colors??

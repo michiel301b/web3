@@ -1,5 +1,4 @@
-import {addSvg, getCardExplanations,setCallback,getCardExplanation} from "/web3/scripts/cardExplanations.js";
-
+import {addSvg, getCardExplanation, getCardExplanations, setCallback} from "/web3/scripts/cardExplanations.js";
 
 
 //let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"];
@@ -7,7 +6,9 @@ import {addSvg, getCardExplanations,setCallback,getCardExplanation} from "/web3/
 let selectedEndLevelCard = {}
 let deckOfCards = []
 const STARTING_DECK_SIZE = 2;
-let endLevelCardAmount = 3;
+let endLevelCardAmount = 4;
+let rareOdds = 0.05;
+let specialOdds = 0.8;
 let deckSize = 0;
 let selected = [-1, -1]
 let shuffledDeckOfCards = []
@@ -15,6 +16,7 @@ let solvedPairs = []
 let uiLocked = false
 let maxLives = 9 + (loadStuff().level || 1);
 let livesLeft = maxLives
+let sparkleIntervalIDs = [];
 
 
 async function fetchIcons() {
@@ -23,6 +25,7 @@ async function fetchIcons() {
     for (let item of allCards) {
         cards.push(item)
     }
+    //console.log("Loading icons. Start time: " + Date.now())
     return await Promise.all(
         cards.map(async (card) => {
             const res = await fetch(card.imgSrc)
@@ -33,16 +36,20 @@ async function fetchIcons() {
     )
 }
 
-fetchIcons()
+fetchIcons()//.finally(()=>{console.log("Done loading icons. End time: " + Date.now())})
 
-function setAllCallbackFuntions(){
+function setAllCallbackFunctions(){
     setCallback("Heart",() => {healHeart();healHeart()},"onpair");
     setCallback("Hollow-Heart",() => healHeart(),"onpair");
     setCallback("Star",() => {post("bonusXP"); post("bonusXP")},"onpair");
     setCallback("Hollow-Star",() => post("bonusXP"),"onpair");
     setCallback("Duplicate",() => deckOfCards.push(getCardExplanation("Duplicate")),"onselect");
-    setCallback("Washing-Machine",shuffleUnsolvedCards(),"onpair");
-    setCallback("Shredder", ()=>{},"onpair");//todo)
+    setCallback("Washing-Machine",shuffleUnsolvedCards,"onpair");
+    setCallback("Shredder", ()=>{},"onpair");
+    setCallback("Magnet", () => {},"onshuffle");
+    setCallback("Hollow-Crystal-Ball", () => {const unsolvedCards = getAllUnsolvedCards();
+        reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)}, "onpair")
+
 
 }
 
@@ -69,6 +76,12 @@ function shuffleDeckOfCards(deckOfCards) {
         [shuffledDeckOfCards[i], shuffledDeckOfCards[j]] = [shuffledDeckOfCards[j], shuffledDeckOfCards[i]];
     }
     return shuffledDeckOfCards;
+}
+
+function getAllUnsolvedCards() {
+    const parent = document.querySelector(".card-grid");
+    const allCards = Array.from(parent.children).filter(c => c.classList.contains("card"));
+    return allCards.filter(c => !c.classList.contains("solved-card"));
 }
 
 function generateHearts() {
@@ -124,6 +137,12 @@ function startGame() {
         let normalCards = getCardExplanations().filter(card => card.type === "normal");
         deckOfCards.push(normalCards[deckOfCards.length]);
     }
+    for (let card of deckOfCards) {
+        if (card.callback && card.callbackMoment === "onlevelstart"){
+            card.callback()
+        }
+    }
+
     generateCardHtml();
     generateHearts();
     document.getElementById("startGameButton").classList.add("hidden")
@@ -165,7 +184,7 @@ function cardClick(id){
     else if (selected[1] === -1) {
         selected[1] = cardId;
     }
-    flipCard(id, cardId);
+    flipCard(cardId);
     if (selected[1] >= 0) {
         let checkMatchResult = checkMatch()
         uiLocked = true;
@@ -203,45 +222,74 @@ function endGame() {
         window.location.href = "home_page.html",1);
 }
 
+function decideEndLevelCards() {
+    let types = []
+    for (let i = 0; i < endLevelCardAmount; i++) {
+        if (Math.random() < rareOdds) {
+            types.push("rare")
+        }
+        else if (Math.random() < specialOdds) {
+            types.push("special")
+        }
+        else {
+            types.push("normal")
+        }
+    }
+    return types
+}
+
 function levelDone() {
+    for (let id of sparkleIntervalIDs) {
+        clearInterval(id);
+    }
+    sparkleIntervalIDs = []
+
     let cardSelector = document.getElementById("level-complete-card-selector");
     document.getElementById("level-complete-card-explanation").innerText = "";
     cardSelector.innerHTML = "";
-    let indexListOfNewCards = []
-    let endLevelPossibleCards = getCardExplanations("","special");
-    for (let i = 0; i < endLevelCardAmount; i++) {
-        let randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length)
-        let attempts = 0
-        console.log("card: "+endLevelPossibleCards[randomIndex].card+", bool= " + deckOfCards.includes(endLevelPossibleCards[randomIndex]));
-        while (indexListOfNewCards.includes(randomIndex) || deckOfCards.includes(endLevelPossibleCards[randomIndex])) {
-            randomIndex = Math.floor(Math.random() * endLevelPossibleCards.length);
-            attempts++;
-            if (attempts >= 5) {
-                console.warn("Couldnt find any more special cards. added normals to endLevelPossibleCards")
-                console.log("elpc: ",endLevelPossibleCards)
-                endLevelPossibleCards += getCardExplanations("","normal");
-                console.log("elpc: ",endLevelPossibleCards)
-                attempts = -100
-            }
+
+    let endLevelSelectableCards = []
+    let ELSCardTypes = decideEndLevelCards()
+    for (let type of ELSCardTypes) {
+        let possibleCards = getCardExplanations("",type);
+        let availableCards = possibleCards.filter(
+            card => !deckOfCards.includes(card) && !endLevelSelectableCards.includes(card)
+        );
+
+        if (availableCards.length === 0) {
+            console.warn("couldnt find card at rarity: " + type)
+            possibleCards = getCardExplanations("","normal")
+            availableCards = possibleCards.filter(
+                card => !deckOfCards.includes(card) && !endLevelSelectableCards.includes(card)
+            )
         }
-        indexListOfNewCards[i] = randomIndex;
+        if (availableCards.length === 0) {
+            console.warn("out of cards to deal.")
+        }
+
+        const randomCard =
+            availableCards[Math.floor(Math.random() * availableCards.length)];
+
+        endLevelSelectableCards.push(randomCard);
+    }
+    for (let i in endLevelSelectableCards) {
         let card = document.createElement("input");
         card.classList.add("card");
-        card.id = "selector-card-" + indexListOfNewCards[i];
+        card.id = "selector-card-" + i;
         card.type = "radio";
         card.name = "card-selector";
         card.classList.add("card-selector");
 
         let label = document.createElement("label");
-        label.htmlFor = "selector-card-" + indexListOfNewCards[i];
+        label.htmlFor = "selector-card-" + i;
         label.classList.add("card-selector-label");
-        label.innerHTML = endLevelPossibleCards[indexListOfNewCards[i]].svgSrc;
+        label.innerHTML = endLevelSelectableCards[i].svgSrc;
 
 
         card.addEventListener("change", (event)=> {
             let explanation = document.getElementById("level-complete-card-explanation");
-            explanation.innerText = endLevelPossibleCards[indexListOfNewCards[i]].description;
-            selectedEndLevelCard = endLevelPossibleCards[indexListOfNewCards[i]]
+            explanation.innerText = endLevelSelectableCards[i].description;
+            selectedEndLevelCard = endLevelSelectableCards[i]
         })
 
         cardSelector.appendChild(card);
@@ -251,12 +299,14 @@ function levelDone() {
     post("levelCompleted")
     document.getElementById("card-container").classList.add("blurred");
     document.getElementById("blurscreen").classList.remove("hidden");
-
 }
 
 function nextLevel() {
     document.getElementById("card-container").classList.remove("blurred");
     document.getElementById("blurscreen").classList.add("hidden");
+    if (selectedEndLevelCard.callbackMoment === "onselect") {
+        selectedEndLevelCard.callback()
+    }
     deckOfCards.push(selectedEndLevelCard)
     resetLevel();
 }
@@ -270,12 +320,33 @@ function checkMatch(){
     return "";
 }
 
-function flipCard(id, cardId){
-    let cardElement = document.getElementById(id);
+function flipCard(cardId){
+    let cardElement = document.getElementById("card-" + cardId);
     cardElement.style.animation = "none";
     cardElement.offsetHeight; //You apparently need this otherwise it will optimize the animation away
     cardElement.style.animation = "card-flip 0.8s ease-in-out forwards";
     setTimeout(function(){cardElement.innerHTML = shuffledDeckOfCards[cardId].svgSrc},400);
+}
+
+function reveal(id) {
+    let cardElement = document.getElementById(id);
+    let cardId = id.slice(5);
+    cardElement.innerHTML = shuffledDeckOfCards[cardId].svgSrc;
+    cardElement.className = cardElement.className + " revealed-card";
+    //const div = document.querySelector(".sparkly");
+
+    sparkleIntervalIDs.push(setInterval(() => {
+        const sparkle = document.createElement("div");
+        sparkle.classList.add("sparkle");
+
+        sparkle.style.left = Math.random() * cardElement.offsetWidth + "px";
+        sparkle.style.top = Math.random() * cardElement.offsetHeight + "px";
+
+        cardElement.appendChild(sparkle);
+
+        setTimeout(() => sparkle.remove(), 1000);
+    }, 200));
+
 }
 
 function resetCard(cardId){
@@ -283,7 +354,9 @@ function resetCard(cardId){
     cardElement.style.animation = "none";
     cardElement.offsetHeight; //You apparently need this otherwise it will optimize the animation away
     cardElement.style.animation = "card-flip 0.8s ease-in-out backwards";
-    setTimeout(function(){cardElement.innerHTML = "<p></p>"},400);
+    if (!cardElement.classList.contains("revealed-card")) {
+        setTimeout(function(){cardElement.innerHTML = "<p></p>"},400);
+    }
 }
 
 function setCardSolved(cardId){
@@ -395,4 +468,4 @@ function shuffleUnsolvedCards() {
 
 
 initEventListeners()
-setAllCallbackFuntions()
+setAllCallbackFunctions()
