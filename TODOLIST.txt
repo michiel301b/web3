@@ -5,6 +5,8 @@ must:
  user settings (color n stuf)
  change grid behavior (for powerups n magnets n stuf)
  refactor (clean up code)
+ make you cry
+ rickroll Michiel
 
 
 should
@@ -13,3 +15,8 @@ should
 could:
  characters with powerups
  implement colors??
+ bugfixes
+
+won't:
+ give you up
+ let you down

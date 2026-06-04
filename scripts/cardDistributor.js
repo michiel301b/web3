@@ -25,7 +25,6 @@ async function fetchIcons() {
     for (let item of allCards) {
         cards.push(item)
     }
-    //console.log("Loading icons. Start time: " + Date.now())
     return await Promise.all(
         cards.map(async (card) => {
             const res = await fetch(card.imgSrc)
@@ -112,6 +111,7 @@ function generateCardHtml(){
     let cardholder = document.getElementById("card-holder");
     for (let i = 0; i < shuffledDeckOfCards.length; i++) {
 
+
         let card = document.createElement("div");
         card.classList.add("card");
         card.id = "card-" + i;
@@ -120,8 +120,8 @@ function generateCardHtml(){
             cardClick(card.id);
         });
 
-        let p = document.createElement("p");
-        card.appendChild(p);
+        //let p = document.createElement("p");
+        //card.appendChild(p);
         cardholder.appendChild(card);
     }
 
