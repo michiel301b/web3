@@ -80,7 +80,13 @@ body {
 .card-grid {
     width: 45vw;
     border-radius: 15px;
-    margin-top: 10vh;
+    margin-top: 5vh;
+}
+
+.card-selector-label {
+    width: 120px;
+    height: 160px;
+    font-size: 50px;
 }
 
 .title {
@@ -114,6 +120,14 @@ body {
     background: #8ed3d5;
 }
 
-.upgrade:active {
-    transform: scale(0.97);
+.unavailable-upgrade:hover {
+    background-color: #444
+}
+
+.unaffordable-upgrade:hover {
+    background-color: #b44;
+}
+
+#buy-button:hover {
+    background-color: #69e161;
 }

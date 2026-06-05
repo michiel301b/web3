@@ -1,4 +1,7 @@
-import {addSvg, getShopUpgrades} from "/web3/scripts/shopUpgrades.js";
+import {addSvg, getShopUpgrades, buyShopUpgrade} from "/web3/scripts/shopUpgrades.js";
+
+let selectedUpgrade = undefined
+
 
 async function fetchIcons() {
     const shopIcons = getShopUpgrades()
@@ -25,6 +28,13 @@ function openShop() {
     shopPopup.classList.remove("hidden");
     homepage.classList.add("blurred");
     shopOverlay.classList.remove("hidden");
+    document.getElementById("shop-screen-upgrade-explanation").classList.add("hidden");
+    selectedUpgrade = undefined
+    updateGoldInShop()
+}
+
+function updateGoldInShop() {
+    document.getElementById("shop-title").innerText = "Upgrade Shop | " + getGold() + " 🪙" ;
 }
 
 shopOverlay.addEventListener("click", () => {
@@ -37,6 +47,18 @@ shopPopup.addEventListener("click", (event) => {
     event.stopPropagation();
 });
 
+document.getElementById("buy-button").addEventListener("click", (event) => {
+    if (!selectedUpgrade) return;
+    let cost = calculateCost(selectedUpgrade);
+    if (cost <= getGold()) {
+        spendGold(cost);
+        buyShopUpgrade(selectedUpgrade.name)
+    }
+    updateShop()
+    updateGoldInShop()
+    selectUpgrade("upgrade_"+selectedUpgrade.id);
+})
+
 function createShop() {
     let shopUpgrades = getShopUpgrades();
 
@@ -44,13 +66,19 @@ function createShop() {
         let upgrade = document.createElement("div");
         upgrade.classList.add("upgrade");
         upgrade.innerHTML += shopUpgrades[i].svgSrc;
+        upgrade.id = "upgrade_" + shopUpgrades[i].id;
         upgrade.innerHTML.replace('width="1em" height="1em"','');
         upgrade.children[0].classList.add("upgrade-icon");
         upgrade.innerHTML += shopUpgrades[i].boughtLevels + "/" + shopUpgrades[i].maxLevels + "<br>";
-        upgrade.innerHTML += calculateCost(shopUpgrades[i]) + " 🪙";
+        let cost = calculateCost(shopUpgrades[i]);
+        upgrade.innerHTML += cost + " 🪙";
         if (shopUpgrades[i].boughtLevels >= shopUpgrades[i].maxLevels) {
             upgrade.classList.add("unavailable-upgrade")
         }
+        if (cost > getGold()) {
+            upgrade.classList.add("unaffordable-upgrade")
+        }
+        upgrade.addEventListener("click", () => selectUpgrade(upgrade.id))
         document.getElementById("shop-screen-buttons").appendChild(upgrade);
     }
 }
@@ -72,4 +100,31 @@ function calculateCost(upgrade) {
 
 }
 
-createShop();
+
+
+function selectUpgrade(id) {
+    let upgradeId = id.slice(8)
+    selectedUpgrade = getShopUpgrades()[upgradeId];
+    if (selectedUpgrade) {
+        document.getElementById("shop-screen-upgrade-explanation").classList.remove("hidden");
+    }
+    let icon = document.getElementById("explanation-icon");
+    icon.outerHTML = selectedUpgrade.svgSrc.replace("<svg",'<svg class="upgrade-icon" id="explanation-icon"');
+
+    document.getElementById("upgrade-name").innerText = selectedUpgrade.name;
+    document.getElementById("upgrade-explanation").innerText = selectedUpgrade.description;
+    document.getElementById("current-price-and-level").innerText = calculateCost(selectedUpgrade) + " 🪙      " + selectedUpgrade.boughtLevels + "/" + selectedUpgrade.maxLevels;
+}
+
+function updateShop(){
+    document.getElementById("shop-screen-buttons").innerHTML = "";
+    createShop();
+    createShop();
+    createShop();
+    createShop();
+    createShop();
+    createShop();
+    createShop();
+}
+
+updateShop()

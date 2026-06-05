@@ -1,4 +1,5 @@
-let allUpgrades = [
+let allUpgrades = //loadStuff().upgrades ||
+ [
     {
         id: 0,
         name: "Healthy Hearts",
@@ -24,19 +25,31 @@ let allUpgrades = [
         id: 2,
         name: "A Greater Selection",
         icon: "https://api.iconify.design/streamline-ultimate/card-add-1-bold.svg",
-        description: "Adds an extra card to the selection screen at the end of each level",
+        description: "Adds an extra card to the selection screen at the end of each level.",
         maxLevels: 1,
         boughtLevels: 0,
         costType: "flat",
-        baseCost: 200
+        baseCost: 2000
     },{
         id: 3,
         name: "Special Card Odds Up",
-        icon: "",
-        description: "Increases the chance of finding special cards at the end of each level",
+        icon: "https://api.iconify.design/subway/file-1.svg",
+        description: "Increases the chance of finding special cards at the end of each level.",
         maxLevels: 10,
         boughtLevels: 0,
+        costType: "linear",
+        baseCost: 20,
+        costIncrement: 12,
 
+    },{
+        id: 4,
+        name: "Combo Wombat",
+        icon: "https://api.iconify.design/token/wombat.svg",
+        description: "Pairing cards starts a combo. Pairing more cards without losing a life grants more gold and XP.",
+        maxLevels: 1,
+        boughtLevels: 0,
+        costType: "flat",
+        baseCost: 30,
     }
 ]
 
@@ -50,4 +63,5 @@ export function getShopUpgrades() {
 
 export function buyShopUpgrade(name){
     allUpgrades.find(upgrade => upgrade.name === name).boughtLevels += 1
+    saveStuff({upgrades: allUpgrades})
 }

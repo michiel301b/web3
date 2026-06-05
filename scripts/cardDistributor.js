@@ -59,7 +59,6 @@ function initEventListeners() {
     document.getElementById("end-game-button").addEventListener("click", endGame)
     document.getElementById("restartGameButton").addEventListener("click", resetGame)
     document.getElementById("startGameButton").addEventListener("click", startGame)
-    document.getElementById("click").addEventListener("click", shuffleUnsolvedCards)
     on("levelUp", () => {
         document.getElementsByClassName("level-text-game")[0].classList.add("levelup");
         setTimeout(() => {
@@ -167,8 +166,8 @@ function resetGame() {
     selected = [-1, -1];
     uiLocked = false;
     deckSize = 0;
-    healAllHearts();
     startGame();
+    healAllHearts();
 }
 
 function cardClick(id){
