@@ -38,14 +38,14 @@ async function fetchIcons() {
 fetchIcons()//.finally(()=>{console.log("Done loading icons. End time: " + Date.now())})
 
 function setAllCallbackFunctions(){
-    setCallback("Heart",() => {healHeart();healHeart()},"onpair");
-    setCallback("Hollow-Heart",() => healHeart(),"onpair");
-    setCallback("Star",() => {post("bonusXP"); post("bonusXP")},"onpair");
-    setCallback("Hollow-Star",() => post("bonusXP"),"onpair");
-    setCallback("Duplicate",() => deckOfCards.push(getCardExplanation("Duplicate")),"onselect");
-    setCallback("Washing-Machine",shuffleUnsolvedCards,"onpair");
-    setCallback("Shredder", ()=>{},"onpair");
-    setCallback("Magnet", () => {},"onshuffle");
+    // setCallback("Heart",() => {healHeart();healHeart()},"onpair");
+    // setCallback("Hollow-Heart",() => healHeart(),"onpair");
+    // setCallback("Star",() => {post("bonusXP"); post("bonusXP")},"onpair");
+    // setCallback("Hollow-Star",() => post("bonusXP"),"onpair");
+    // setCallback("Duplicate",() => deckOfCards.push(getCardExplanation("Duplicate")),"onselect");
+    // setCallback("Washing-Machine",shuffleUnsolvedCards,"onpair");
+    // setCallback("Shredder", ()=>{},"onpair");
+    setCallback("Magnet", (deck) => putMagnetsAdjacent(deck),"onshuffle");
     setCallback("Hollow-Crystal-Ball", () => {const unsolvedCards = getAllUnsolvedCards();
         reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)}, "onpair")
 
@@ -68,12 +68,59 @@ function initEventListeners() {
 }
 
 function shuffleDeckOfCards(deckOfCards) {
-    shuffledDeckOfCards = deckOfCards.concat(deckOfCards)
-    for (let i = 0; i < shuffledDeckOfCards.length; i++) {
+    let toShuffleDeck = deckOfCards.concat(deckOfCards)
+    for (let i = 0; i < toShuffleDeck.length; i++) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffledDeckOfCards[i], shuffledDeckOfCards[j]] = [shuffledDeckOfCards[j], shuffledDeckOfCards[i]];
+        [toShuffleDeck[i], toShuffleDeck[j]] = [toShuffleDeck[j], toShuffleDeck[i]];
     }
-    return shuffledDeckOfCards;
+    for (let card of deckOfCards) {
+        if (card.callback && card.callbackMoment === "onshuffle"){
+            toShuffleDeck = card.callback(toShuffleDeck);
+        }
+    }
+    return toShuffleDeck;
+}
+
+function putMagnetsAdjacent(deck) {
+    const magnetIndices = [];
+    for (let i = 0; i < deck.length; i++) {
+        console.log(deck[i]);
+        if (deck[i].card === "Magnet") {
+            magnetIndices.push(i);
+        }
+    }
+    if (magnetIndices.length !== 2) {return deck}
+    console.log(magnetIndices);
+    console.log(JSON.parse(JSON.stringify(deck)));
+    const randomMagnetIndex = magnetIndices[Math.floor(Math.random() * magnetIndices.length)];
+    console.log("rand mag" +randomMagnetIndex);
+    const otherMagnetIndex = magnetIndices.filter((num)=>num !== randomMagnetIndex)[0];
+    const candidates = getValidAdjacentCells(randomMagnetIndex,deck.length).filter(x => x < deck.length);
+    const randomCandidate = candidates[Math.floor(Math.random() * candidates.length)];
+    [deck[otherMagnetIndex],deck[randomCandidate]] = [deck[randomCandidate],deck[otherMagnetIndex]];
+    console.log(deck)
+    return deck;
+}
+function getValidAdjacentCells(index, deckSize) {
+    const size = 8;
+    const x = index % size;
+    const y = Math.floor(index / size);
+
+    const candidates = [
+        [x - 1, y], // left
+        [x + 1, y], // right
+        [x, y - 1], // up
+        [x, y + 1]  // down
+    ];
+
+    return candidates
+        .filter(([nx, ny]) =>
+            nx >= 0 &&
+            nx < size &&
+            ny >= 0 &&
+            ny < size
+        )
+        .map(([nx, ny]) => ny * size + nx);
 }
 
 function getAllUnsolvedCards() {
