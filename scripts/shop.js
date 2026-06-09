@@ -49,11 +49,13 @@ shopPopup.addEventListener("click", (event) => {
 
 document.getElementById("buy-button").addEventListener("click", (event) => {
     if (!selectedUpgrade) return;
+    if (selectedUpgrade.boughtLevels >= selectedUpgrade.maxLevels) return;
     let cost = calculateCost(selectedUpgrade);
     if (cost <= getGold()) {
         spendGold(cost);
         buyShopUpgrade(selectedUpgrade.name)
     }
+    post("buyUpgrade",selectedUpgrade);
     updateShop()
     updateGoldInShop()
     selectUpgrade("upgrade_"+selectedUpgrade.id);
@@ -71,9 +73,12 @@ function createShop() {
         upgrade.children[0].classList.add("upgrade-icon");
         upgrade.innerHTML += shopUpgrades[i].boughtLevels + "/" + shopUpgrades[i].maxLevels + "<br>";
         let cost = calculateCost(shopUpgrades[i]);
-        upgrade.innerHTML += cost + " 🪙";
         if (shopUpgrades[i].boughtLevels >= shopUpgrades[i].maxLevels) {
             upgrade.classList.add("unavailable-upgrade")
+            upgrade.innerHTML += "Sold out";
+        }
+        else {
+            upgrade.innerHTML += cost + " 🪙";
         }
         if (cost > getGold()) {
             upgrade.classList.add("unaffordable-upgrade")
@@ -113,7 +118,14 @@ function selectUpgrade(id) {
 
     document.getElementById("upgrade-name").innerText = selectedUpgrade.name;
     document.getElementById("upgrade-explanation").innerText = selectedUpgrade.description;
-    document.getElementById("current-price-and-level").innerText = calculateCost(selectedUpgrade) + " 🪙      " + selectedUpgrade.boughtLevels + "/" + selectedUpgrade.maxLevels;
+    let cpal; //current price and level
+    if (selectedUpgrade.boughtLevels >= selectedUpgrade.maxLevels) {
+        cpal = "Sold out      "  + selectedUpgrade.boughtLevels + "/" + selectedUpgrade.maxLevels;
+    }
+    else {
+        cpal = calculateCost(selectedUpgrade) + " 🪙      " + selectedUpgrade.boughtLevels + "/" + selectedUpgrade.maxLevels;
+    }
+    document.getElementById("current-price-and-level").innerText = cpal;
 }
 
 function updateShop(){

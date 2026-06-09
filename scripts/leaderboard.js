@@ -26,24 +26,6 @@ function summonLeaderboardPopup() {
     lbOverlay.classList.remove("hidden");
 }
 
-function registerFakeUser() {
-    const user = fetch("http://localhost:8000/memory/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            username: "Henk",
-            email: "henk@henk.henk",
-            password: "henk"
-        })
-    }).then(res => res.json())
-    .then(data => {
-        console.log(data);
-    })
-}
-
-//registerFakeUser();
 
 const check = () => {
     fetch('http://localhost:8000/memory/scores')

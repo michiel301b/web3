@@ -1,5 +1,6 @@
 let xp = loadStuff().xp || 0
 let level = loadStuff().level || 0;
+let xpMultiplier = loadStuff().xpMultiplier || 1;
 
 on("cardSolved", () => {
     updateXP(10)
@@ -13,11 +14,25 @@ on("levelCompleted", () => {
     updateXP(50)
 })
 
+on("buyUpgrade", (e) => {
+    let upgrade = e;
+    console.log("upgrade", upgrade)
+    if (upgrade.id === 1) { // name === "experience expediter"
+        xpMultiplier = 1 + upgrade.boughtLevels * 0.05;
+        saveStuff( { xpMultiplier })
+    }
+
+})
+
 function updateXP(deltaXP) {
-    xp += deltaXP;
+    console.log("updateXP", deltaXP);
+    console.log("mult", xpMultiplier);
+    console.log("comb", deltaXP * xpMultiplier);
+
+    xp += (deltaXP * xpMultiplier);
     saveStuff({ xp })
     checkIfNewLevel()
-    document.getElementsByClassName("xp-text-game")[0].textContent = `${xp} XP ⭐`
+    document.getElementsByClassName("xp-text-game")[0].textContent = `${Math.floor(xp)} XP ⭐`
 }
 
 const levels = {

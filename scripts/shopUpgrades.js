@@ -1,4 +1,4 @@
-let allUpgrades = //loadStuff().upgrades ||
+let allUpgrades = loadStuff().upgrades ||
  [
     {
         id: 0,
@@ -16,7 +16,7 @@ let allUpgrades = //loadStuff().upgrades ||
         name: "Experience Expediter",
         icon: "https://api.iconify.design/fluent/star-add-32-filled.svg",
         description: "Become more experienced at collecting experience.",
-        maxLevels: 10,
+        maxLevels: 20,
         boughtLevels: 0,
         costType: "linear",
         baseCost: 5,
@@ -50,6 +50,16 @@ let allUpgrades = //loadStuff().upgrades ||
         boughtLevels: 0,
         costType: "flat",
         baseCost: 30,
+    },{
+        id: 5,
+        name: "No Negative Nancy",
+        icon: "https://api.iconify.design/icon-park-solid/bad-two.svg",
+        description: "Reduces the chance of finding negative cards at the end of each level.",
+        maxLevels: 10,
+        boughtLevels: 0,
+        costType: "linear",
+        baseCost: 30,
+        costIncrement: 13,
     }
 ]
 

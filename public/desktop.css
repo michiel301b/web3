@@ -74,11 +74,11 @@ body {
 }
 
 #card-container {
-    width: 45vw;
+    width: 30vw;
 }
 
 .card-grid {
-    width: 45vw;
+    width: 30vw;
     border-radius: 15px;
     margin-top: 5vh;
 }

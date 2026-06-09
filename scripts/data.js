@@ -11,6 +11,7 @@ function loadStuff() {
         gold: 0,
         xp: 0,
         level: 1,
-        upgrades: []
+        upgrades: [],
+        users: [{}],
     }
 }

@@ -1,4 +1,5 @@
 import {addSvg, getCardExplanation, getCardExplanations, setCallback} from "/web3/scripts/cardExplanations.js";
+import {getShopUpgrades} from "/web3/scripts/shopUpgrades.js";
 
 
 //let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"];
@@ -8,7 +9,10 @@ let deckOfCards = []
 const STARTING_DECK_SIZE = 2;
 let endLevelCardAmount = 4;
 let rareOdds = 0.05;
-let specialOdds = 0.8;
+const SPECIAL_ODDS_BASE = 0.2;
+let specialOdds = SPECIAL_ODDS_BASE;
+const NEGATIVE_ODDS_BASE = 0.2;
+let negativeOdds = NEGATIVE_ODDS_BASE;
 let deckSize = 0;
 let selected = [-1, -1]
 let shuffledDeckOfCards = []
@@ -38,13 +42,13 @@ async function fetchIcons() {
 fetchIcons()//.finally(()=>{console.log("Done loading icons. End time: " + Date.now())})
 
 function setAllCallbackFunctions(){
-    // setCallback("Heart",() => {healHeart();healHeart()},"onpair");
-    // setCallback("Hollow-Heart",() => healHeart(),"onpair");
-    // setCallback("Star",() => {post("bonusXP"); post("bonusXP")},"onpair");
-    // setCallback("Hollow-Star",() => post("bonusXP"),"onpair");
-    // setCallback("Duplicate",() => deckOfCards.push(getCardExplanation("Duplicate")),"onselect");
-    // setCallback("Washing-Machine",shuffleUnsolvedCards,"onpair");
-    // setCallback("Shredder", ()=>{},"onpair");
+    setCallback("Heart",() => {healHeart();healHeart()},"onpair");
+    setCallback("Hollow-Heart",() => healHeart(),"onpair");
+    setCallback("Star",() => {post("bonusXP"); post("bonusXP")},"onpair");
+    setCallback("Hollow-Star",() => post("bonusXP"),"onpair");
+    setCallback("Duplicate",() => deckOfCards.push(getCardExplanation("Duplicate")),"onselect");
+    setCallback("Washing-Machine",shuffleUnsolvedCards,"onpair");
+    setCallback("Shredder", ()=>{},"onpair");
     setCallback("Magnet", (deck) => putMagnetsAdjacent(deck),"onshuffle");
     setCallback("Hollow-Crystal-Ball", () => {const unsolvedCards = getAllUnsolvedCards();
         reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)}, "onpair")
@@ -65,6 +69,14 @@ function initEventListeners() {
             document.getElementsByClassName("level-text-game")[0].classList.remove("levelup");
         }, 10000);
     })
+}
+
+function startOfGameUpgrades() {
+    for (let upgrade of getShopUpgrades()) {
+        if (upgrade.name === "Healthy Hearts") {
+            maxLives = 9 + (loadStuff().level || 1) + upgrade.boughtLevels;
+        }
+    }
 }
 
 function shuffleDeckOfCards(deckOfCards) {
@@ -189,6 +201,7 @@ function startGame() {
         }
     }
 
+    startOfGameUpgrades();
     generateCardHtml();
     generateHearts();
     document.getElementById("startGameButton").classList.add("hidden")
@@ -270,6 +283,11 @@ function endGame() {
 
 function decideEndLevelCards() {
     let types = []
+    if (Math.random() < negativeOdds){
+        for (let i = 0; i < endLevelCardAmount; i++) {
+            types.push("negative");
+        }
+    }
     for (let i = 0; i < endLevelCardAmount; i++) {
         if (Math.random() < rareOdds) {
             types.push("rare")
@@ -284,11 +302,26 @@ function decideEndLevelCards() {
     return types
 }
 
+function preLevelDoneUpgrades() {
+    for (let upgrade of getShopUpgrades()) {
+        if (upgrade.id === 2) { //upgrade.name === "A Greater Selection") {
+            endLevelCardAmount = 3 + upgrade.boughtLevels;
+        }
+        if (upgrade.id === 3) { //upgrade.name === "Special Card Odds Up") {
+            specialOdds = SPECIAL_ODDS_BASE + upgrade.boughtLevels * 0.01;
+        }
+        if (upgrade.id === 5) { //upgrade.name === "No Negative Nancy"
+            negativeOdds = NEGATIVE_ODDS_BASE - upgrade.boughtLevels * 0.01;
+        }
+    }
+}
+
 function levelDone() {
     for (let id of sparkleIntervalIDs) {
         clearInterval(id);
     }
     sparkleIntervalIDs = []
+    preLevelDoneUpgrades();
 
     let cardSelector = document.getElementById("level-complete-card-selector");
     document.getElementById("level-complete-card-explanation").innerText = "";

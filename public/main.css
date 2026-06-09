@@ -514,8 +514,32 @@ p {
     padding: 16px;
 }
 
-
-
 #buy-button:active {
     transform: scale(0.97);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 60vh;
+}
+
+.login-form input {
+    background-color: white;
+    border: solid white 1px;
+    margin: 10px 0;
+    border-radius: 12px;
+    width: 50vw;
+    height: 6vh;
+    font-size: 24px;
+}
+
+.bad-login-entry {
+    color: red;
+    font-weight: bold;
+    background-color:rgba(1, 1, 1, 0.5);
+    padding: 16px;
+    border-radius: 12px;
 }
