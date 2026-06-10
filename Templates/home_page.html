@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -26,14 +26,14 @@
     </div>
     <div class="homepage-buttons">
         <button class="homepage-button" onclick="window.location.href='../Templates/main_game.html'">Play</button>
-        <button class="homepage-button" >Delete savefile</button>
+        <button class="homepage-button" id="delete-savefile" >Delete savefile</button>
         <button class="homepage-button" id="leaderboard-button" >Leaderboard</button>
-        <button class="homepage-button" id="shop-button">Shop</button>
-        <button class="homepage-button" >Help</button>
-        <button class="homepage-button" >Credits</button>
+        <button class="homepage-button" id="shop-button" >Shop</button>
+        <button class="homepage-button" id="preference-button" >Preferences</button>
+        <button class="homepage-button" id="logout-button" >Log out</button>
     </div>
 </div>
-<div class="overlay hidden" id="shop-overlay">
+<div class="overlay hidden" id="overlay">
     <div class="shop-screen hidden" id="shop-screen">
         <h2 class="homescreen-h2" id="shop-title">Upgrade Shop</h2>
         <div class="shop-screen-buttons" id="shop-screen-buttons">
@@ -49,8 +49,7 @@
 
         </div>
     </div>
-</div>
-<div class="overlay hidden" id="leaderboard-overlay">
+
     <div class="leaderboard-screen hidden" id="leaderboard-screen">
         <h2 class="homescreen-h2">Leaderboard</h2>
         <svg class="loading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -64,12 +63,37 @@
 
         </table>
     </div>
+
+    <div class="preferences-screen hidden" id="preferences-screen">
+        <h2 class="homescreen-h2">Preferences</h2>
+        <h3>Theme</h3>
+        <div class="color-switch-container">
+            <label class="color-switch">
+                <input name="theme" type="radio" value="dark">Dark mode
+            </label>
+            <label class="color-switch">
+                <input name="theme" type="radio" value="light" checked="checked">Light mode
+            </label>
+        </div>
+        <h3>Card API</h3>
+        <div class="api-selector">
+            <select id="api-selector">
+                <option value="ShAPI" selected="selected">ShAPI</option>
+                <option value="ColorAPI">ColorAPI</option>
+            </select>
+        </div>
+    </div>
 </div>
+
+
 </body>
 </html>
 <script src="/scripts/eventbus.js"></script>
+<script src="/scripts/networking.js"></script>
 <script src="/scripts/data.js"></script>
 <script src="/scripts/leaderboard.js"></script>
 <script src="/scripts/gold.js"></script>
 <script src="/scripts/xp.js"></script>
+<script src="/scripts/preferences.js"></script>
+<script src="/scripts/homePagePopupManager.js"></script>
 <script type="module" src="/scripts/shop.js"></script>

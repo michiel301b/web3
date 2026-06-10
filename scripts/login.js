@@ -23,6 +23,7 @@ async function registerOrLogin(event) {
                     return false;
                 }
                 alert("email is already in use, but other credentials may not match.");
+                console.log(user.username, currentLoginAttempt.username, user.password, await hashString(currentLoginAttempt.password))
                 return false;
             }
         }
@@ -51,7 +52,7 @@ function validateCredentials(username, email, password) {
 
 async function loginUser(currentLoginAttempt) {
     currentLoginAttempt.password = await hashString(currentLoginAttempt.password)
-    const user = oldFetch("http://localhost:8000/memory/login", {
+    const user = window.oldFetch("http://localhost:8000/memory/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -61,8 +62,18 @@ async function loginUser(currentLoginAttempt) {
             email: currentLoginAttempt.email,
             password: currentLoginAttempt.password
         })
-    }).then(res => res.json())
-        .then((data) => console.log(data))
+    }).then(res => {
+        if (res.status === 200) {
+            return res.json()
+        }
+        else{
+            throw new Error(res.statusText);
+        }
+    })
+        .then((data) => {
+            localStorage.setItem("token",data.token)
+            window.location.replace("http://localhost:63342/web3/Templates/home_page.html");
+        })
         .catch(err => console.log(err));
     console.log("logged in ", currentLoginAttempt)
 }
@@ -74,7 +85,7 @@ async function registerUser(currentLoginAttempt) {
     saveStuff({users});
     console.log("registered ", currentLoginAttempt)
 
-    const user = oldFetch("http://localhost:8000/memory/register", {
+    const user = window.oldFetch("http://localhost:8000/memory/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -88,11 +99,28 @@ async function registerUser(currentLoginAttempt) {
 }
 
 async function hashString(str) {
-    const data = new TextEncoder().encode(str);
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-
-    return [...new Uint8Array(hashBuffer)]
-        .map(b => b.toString(16).padStart(2, "0"))
-        .join("");
+    return str;
 }
+
+
+// async function hashString(str) {                         //inconsistent????
+//     const data = new TextEncoder().encode(str);
+//     const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+//
+//     return [...new Uint8Array(hashBuffer)]
+//         .map(b => b.toString(16).padStart(2, "0"))
+//         .join("");
+// }
+
+// let strings = ["test1","name","password","reallylongpasswordforsomereasonidonevenknow","12345678"]
+//
+// testHashString()
+// testHashString()
+//
+// async function testHashString() {
+//     for (let string of strings) {
+//         console.log(string);
+//         console.log(await hashString(string))
+//     }
+// }
 

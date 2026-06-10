@@ -1,16 +1,87 @@
+:root[data-theme="light"] {
+    --bg-img: url("images/bg2.png");
+    --bg-color: white;
+    --bg-color-contrast: #ccc;
+    --text-color: black;
+    --text-color-reverse: white;
+    --text-color-bright: #bbb;
+    --nav-bar-color: cadetblue;
+    --card-back-unsolved: cadetblue;
+    --card-back-solved: #82dc7c;
+    --card-back-revealed: palegoldenrod;
+    --sparle: white;
+    --card-back-solved-hover: #82dc7c;
+    --card-back-unsolved-hover: #8ed3d5;
+    --card-back-special: #dde158;
+    --card-back-negative: #b44;
+    --card-unavailable: #555;
+    --card-unavailable-hover: #444;
+    --card-unaffordable: #944;
+    --card-unaffordable-hover: #b44;
+    --buy-button: #82dc7c;
+    --buy-button-hover: #69e161;
+    --heart-color: red;
+    --bad-login: red;
+
+}
+
+:root[data-theme="dark"] {
+    --bg-img: url("images/bg3.jpg");
+    --bg-color-contrast: #1e1e1e;
+    --bg-color: #222222;
+
+    --text-color: #b6b6b6;
+    --text-color-reverse: #121212;
+    --text-color-bright: #bbb;
+
+    --nav-bar-color: #113d42;
+
+    --card-back-unsolved: #19626a;
+    --card-back-solved: #4caf50;
+    --card-back-revealed: #b59f3b;
+
+    --sparle: #f5f5f5;
+
+    --card-back-solved-hover: #3fa046;
+    --card-back-unsolved-hover: #17535a;
+
+    --card-back-special: #9c9e4a;
+    --card-back-negative: #b44;
+
+    --card-unavailable: #3a3a3a;
+    --card-unavailable-hover: #2f2f2f;
+
+    --card-unaffordable: #7a2f2f;
+    --card-unaffordable-hover: #992f2f;
+
+    --buy-button: #4caf50;
+    --buy-button-hover: #3fa046;
+
+    --heart-color: #871e1e;
+
+    --bad-login: #ff4d4d;
+}
+
+:root[data-theme="blue"] {
+    --bg-color: #0d1b2a;
+    --text-color: #e0e1dd;
+    --text-color-reverse: #121212;
+    --nav-bar-color: #070968;
+}
+
 body {
     min-height: 100vh;
     margin: 0;
     font-family: 'Inter', 'Segoe UI', sans-serif;
-    background-image: url("images/bg3.jpg");
+    background-image: var(--bg-img);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     user-select: none;
 }
 
-p {
-    color: black;
+p, button {
+    color: var(--text-color);
 }
 
 .homepage-container {
@@ -18,7 +89,7 @@ p {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    color: white;
+    color: var(--text-color-reverse);
 }
 
 .hometitle {
@@ -32,22 +103,12 @@ p {
     display: flex;
     flex-direction: row;
     gap: 20px;
-    color: white;
+    color: var(--text-color-reverse);
     align-items: center;
 }
 
-.gold-text {
-    color: white;
-    font-size: 16px;
-}
-
-.xp-text {
-    color: white;
-    font-size: 16px;
-}
-
-.level-text {
-    color: white;
+.currencies p, .level p {
+    color: var(--text-color-reverse);
     font-size: 16px;
 }
 
@@ -60,8 +121,8 @@ p {
 }
 
 .homepage-button {
-    background-color: white;
-    border: solid white 1px;
+    background-color: var(--bg-color);
+    border: solid var(--bg-color) 1px;
     margin: 10px 0;
     border-radius: 12px;
     width: 50vw;
@@ -80,7 +141,7 @@ p {
 .topbar {
     height: 60px;
     width: 100%;
-    background-color: cadetblue;
+    background-color: var(--nav-bar-color);
     position: fixed;
     top: 0;
     left: 0;
@@ -94,21 +155,11 @@ p {
     display: flex;
     flex-direction: row;
     gap: 20px;
-    color: white;
+    color: var(--text-color-reverse);
 }
 
-.gold-text-game {
-    color: white;
-    font-size: 16px;
-}
-
-.xp-text-game {
-    color: white;
-    font-size: 16px;
-}
-
-.level-text-game {
-    color: white;
+.currenciesgame p {
+    color: var(--text-color-reverse);
     font-size: 16px;
 }
 
@@ -126,7 +177,7 @@ p {
 }
 
 .card {
-    background-color: cadetblue;
+    background-color: var(--card-back-unsolved);
     width: 50px;
     height: 69px;
     display: flex;
@@ -140,7 +191,7 @@ p {
 }
 
 .revealed-card {
-    background-color: palegoldenrod;
+    background-color: var(--card-back-revealed);
 }
 
 .sparkly {
@@ -152,7 +203,7 @@ p {
     position: absolute;
     width: 8px;
     height: 8px;
-    background: white;
+    background: var(--sparle);
     clip-path: polygon(
             50% 0%,
             60% 40%,
@@ -182,7 +233,7 @@ p {
 }
 
 .solved-card {
-    background-color: #82dc7c;
+    background-color: var(--card-back-solved);
 }
 
 @keyframes card-flip {
@@ -215,6 +266,11 @@ p {
     gap: 3px;
 }
 
+#game-buttons {
+    display: flex;
+    align-items: center;
+}
+
 .heart-container {
     margin: 10px 0;
     display: flex;
@@ -222,7 +278,7 @@ p {
 }
 
 #extra {
-    color: red;
+    color: var(--heart-color);
     font-size: 24px;
     font-weight: bold;
 }
@@ -235,31 +291,21 @@ p {
     flex-direction: column;
 }
 
-.optionClass {
+.optionClass, #restartGameButton{
     width: 100%;
     margin: 10px 0;
     padding: 10px;
-    border-color: white;
+    border-color: var(--bg-color);
     border-radius: 10px;
-    background-color: white;
+    background-color: var(--bg-color);
     font-size: 12px;
     cursor: pointer;
-}
-
-#restartGameButton {
-    width: 100%;
-    margin: 10px 0;
-    padding: 10px;
-    border-color: white;
-    border-radius: 10px;
-    background-color: white;
-    font-size: 12px;
-    cursor: pointer;
+    white-space: nowrap;
 }
 
 .heart {
-    width: 15px;
-    height: 15px;
+    color: var(--heart-color);
+    font-size: 30px;
     padding: 1px;
 }
 
@@ -271,7 +317,7 @@ p {
     filter: blur(5px);
 }
 
-#blurscreen{
+#blurscreen {
     position: fixed;
     top: 0;
     left: 0;
@@ -282,29 +328,97 @@ p {
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.4);
-    color: white;
     z-index: 10;
 }
 
-#leaderboard-screen, #shop-screen {
+#outer-card-selector {
+    background: rgba(0,0,0,0.45);
+    color: var(--text-color-bright);
+    padding: 10vh 5vw;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+#leaderboard-screen, #shop-screen, #preferences-screen{
+    display: flex;
     position: fixed;
     top: 10vh;
     left: 10vw;
     border-radius: 30px;
     height: 80vh;
     width: 80vw;
-    background-color: white;
-    color: black;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 #leaderboard-screen {
-    display: flex;
     justify-content: center;
 }
 
 #shop-screen {
+    flex-direction: column;
+}
+
+#preferences-screen {
+    /*justify-content: center;*/
+    flex-direction: column;
+}
+
+.color-switch-container {
     display: flex;
     flex-direction: column;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.color-switch {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 15px;
+    background: var(--bg-color-contrast);
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
+}
+
+.color-switch input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 22px;
+    height: 22px;
+    border: 3px solid var(--nav-bar-color);
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    margin: 0;
+    cursor: pointer;
+}
+
+.color-switch input[type="radio"]::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.15s ease;
+    background: var(--nav-bar-color);
+}
+
+.color-switch input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+.color-switch:has(input:checked) {
+    border: 2px solid var(--nav-bar-color);
+    background: color-mix(in srgb, var(--nav-bar-color) 15%, var(--bg-color-contrast));
 }
 
 .shop-screen-buttons {
@@ -340,21 +454,6 @@ p {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-#levelup-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.4);
-    color: white;
-    z-index: 11;
-}
-
 .hidden {
     display: none !important;
 }
@@ -368,8 +467,8 @@ p {
     text-align: center;
     font-size: 20px;
     border-radius: 15px;
-    background-color: white;
-    border: solid white 1px;
+    background-color: var(--bg-color);
+    border: solid var(--bg-color) 1px;
     margin: 10px;
 }
 
@@ -387,13 +486,14 @@ p {
 .card-selector-label {
     width: 60px;
     height: 80px;
+    color: white;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     border-radius: 15px;
-    background-color: cadetblue;
+    background-color: var(--card-back-unsolved);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
     font-size: 25px;
@@ -408,8 +508,16 @@ p {
             border-color 0.15s ease;
 }
 
+.card-selector-special {
+    background-color: var(--card-back-special);
+}
+
+.card-selector-negative {
+    background-color: var(--card-back-negative);
+}
+
 .card-selector:checked + .card-selector-label {
-    background-color: #82dc7c;
+    filter: brightness(1.2);
     transform: scale(1.05);
 }
 
@@ -422,10 +530,10 @@ p {
 .upgrade {
     font-size: 20px;
     font-weight: bold;
-    color: black;
+    color: var(--text-color);
 
     border-radius: 16px;
-    background-color: cadetblue;
+    background-color: var(--card-back-unsolved);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -452,11 +560,11 @@ p {
 }
 
 .unavailable-upgrade {
-    background-color: #555;
+    background-color: var(--card-unavailable);
 }
 
 .unaffordable-upgrade {
-    background-color: #944;
+    background-color: var(--card-unaffordable);
 }
 
 .upgrade:active {
@@ -467,7 +575,7 @@ p {
     /*display: flex;*/
     flex: 0 0 30%;
     height: 30vh;
-    background-color: #ccc;
+    background-color: var(--bg-color-contrast);
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
 }
@@ -509,7 +617,7 @@ p {
     position: absolute;
     right: 2vh;
     bottom: 2vh;
-    background-color: #82dc7c;
+    background-color: var(--buy-button);
     border-radius: 6px;
     padding: 16px;
 }
@@ -526,9 +634,15 @@ p {
     width: 60vh;
 }
 
+.login-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .login-form input {
-    background-color: white;
-    border: solid white 1px;
+    background-color: var(--bg-color);
+    border: solid var(--bg-color) 1px;
     margin: 10px 0;
     border-radius: 12px;
     width: 50vw;
@@ -537,7 +651,7 @@ p {
 }
 
 .bad-login-entry {
-    color: red;
+    color: var(--bad-login);
     font-weight: bold;
     background-color:rgba(1, 1, 1, 0.5);
     padding: 16px;

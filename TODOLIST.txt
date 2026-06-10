@@ -1,14 +1,14 @@
 must:
  connect to databae
- inloggen en zo
- implement powerups (shop)
+v inloggen en zo
+h implement powerups (shop)
  user settings (color n stuf)
     USER SELECTABLE APIS? (guess i can make material symbols and material symbols light)
- change grid behavior (for powerups n magnets n stuf)
+v change grid behavior (for powerups n magnets n stuf)
  refactor (clean up code)
  make you cry
  rickroll Michiel
- domme leesopdrachten
+v domme leesopdrachten
 
 
 

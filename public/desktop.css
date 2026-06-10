@@ -1,7 +1,6 @@
 body {
     min-height: 100vh;
     margin: 0;
-    background-image: url("images/bg2.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -16,61 +15,35 @@ body {
     font-size: 60px;
 }
 
-.gold-text {
-    font-size: 50px;
-}
-
-.xp-text {
-    font-size: 50px;
-}
-
-.level-text {
+.currencies p, .level p {
     font-size: 50px;
 }
 
 .currenciesgame {
     margin-top: -10px;
 }
-.gold-text-game {
-    color: white;
-    font-size: 24px;
-}
 
-.xp-text-game {
-    color: white;
-    font-size: 24px;
-}
-
-.level-text-game {
-    color: white;
+.currenciesgame p{
     font-size: 24px;
 }
 
 .homepage-buttons {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
     height: 50vh;
 }
 
 .homepage-button {
-    background-color: white;
-    border: solid white 1px;
-    margin: 10px 0;
-    border-radius: 12px;
     width: 500px;
     height: 75px;
     font-size: 32px;
 }
 
 .solved-card:hover {
-    background-color: #82dc7c;
+    background-color: var(--card-back-solved-hover);
 }
 
 .card:hover {
     transform: scale(1.1);
-    background-color: #8ed3d5;
+    background-color: var(--card-back-unsolved-hover);
 }
 
 #card-container {
@@ -94,8 +67,6 @@ body {
 }
 
 .heart {
-    width: 25px;
-    height: 25px;
     padding: 1px;
 }
 
@@ -107,7 +78,7 @@ body {
     filter: blur(5px);
 }
 
-#leaderboard-screen, #shop-screen {
+#leaderboard-screen, #shop-screen, #preferences-screen {
     left: 30vw;
     width: 40vw;
 }
@@ -117,17 +88,27 @@ body {
 }
 
 .upgrade:hover {
-    background: #8ed3d5;
+    background: var(--card-back-unsolved-hover);
 }
 
 .unavailable-upgrade:hover {
-    background-color: #444
+    background-color: var(--card-unavailable-hover);
 }
 
 .unaffordable-upgrade:hover {
-    background-color: #b44;
+    background-color: var(--card-unaffordable-hover);
 }
 
 #buy-button:hover {
-    background-color: #69e161;
+    background-color: var(--buy-button-hover);
+}
+
+.login-form{
+    height: 50vh;
+}
+
+.login-form input{
+    width: 500px;
+    height: 75px;
+    font-size: 32px;
 }

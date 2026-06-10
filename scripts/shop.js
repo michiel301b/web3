@@ -7,7 +7,7 @@ async function fetchIcons() {
     const shopIcons = getShopUpgrades()
     return await Promise.all(
         shopIcons.map(async (upgrade) => {
-            const res = await fetch(upgrade.icon)
+            const res = await window.oldFetch(upgrade.icon)
                 .then(res => res.text())
             addSvg(upgrade.name, res)
             return res
@@ -19,7 +19,7 @@ await fetchIcons()
 
 document.getElementById("shop-button").addEventListener("click", openShop)
 
-const shopOverlay = document.getElementById("shop-overlay");
+// const shopOverlay = document.getElementById("shop-overlay");
 const shopPopup = document.getElementById("shop-screen");
 
 
@@ -27,7 +27,7 @@ const shopPopup = document.getElementById("shop-screen");
 function openShop() {
     shopPopup.classList.remove("hidden");
     homepage.classList.add("blurred");
-    shopOverlay.classList.remove("hidden");
+    overlay.classList.remove("hidden");
     document.getElementById("shop-screen-upgrade-explanation").classList.add("hidden");
     selectedUpgrade = undefined
     updateGoldInShop()
@@ -37,12 +37,12 @@ function updateGoldInShop() {
     document.getElementById("shop-title").innerText = "Upgrade Shop | " + getGold() + " 🪙" ;
 }
 
-shopOverlay.addEventListener("click", () => {
-    shopOverlay.classList.add("hidden");
-    shopPopup.classList.add("hidden");
-    homepage.classList.remove("blurred");
-});
-
+// shopOverlay.addEventListener("click", () => {
+//     shopOverlay.classList.add("hidden");
+//     shopPopup.classList.add("hidden");
+//     homepage.classList.remove("blurred");
+// });
+//
 shopPopup.addEventListener("click", (event) => {
     event.stopPropagation();
 });
@@ -62,6 +62,7 @@ document.getElementById("buy-button").addEventListener("click", (event) => {
 })
 
 function createShop() {
+    console.log("trying to load all shop upgrades...");
     let shopUpgrades = getShopUpgrades();
 
     for (let i = 0; i < shopUpgrades.length; i++) {
