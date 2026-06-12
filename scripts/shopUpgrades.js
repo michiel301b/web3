@@ -1,5 +1,5 @@
 let allUpgrades = loadStuff().upgrades ||
- [
+[
     {
         id: 0,
         name: "Healthy Hearts",
@@ -60,11 +60,21 @@ let allUpgrades = loadStuff().upgrades ||
         costType: "linear",
         baseCost: 30,
         costIncrement: 13,
+    },{
+        id: 6,
+        name: "Midas' Touch",
+        icon: "https://api.iconify.design/mdi/gold.svg",
+        description: "Multiplies the amount of gold you get per pair.",
+        maxLevels: 15,
+        boughtLevels: 0,
+        costType: "linear",
+        baseCost: 10,
+        costIncrement: 15,
     }
 ]
 
 export function addSvg(name, svgSrc){
-    allUpgrades.find(upgrade => upgrade.name === name).svgSrc = svgSrc;
+    allUpgrades.find(upgrade => upgrade.name === name).svgSrc = svgSrc
 }
 
 export function getShopUpgrades() {

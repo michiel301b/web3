@@ -37,21 +37,21 @@ let cardExplanations = [
 
 
 function addCardExplanation(card,description = "Normal card",imgSrc = ""){
-    let newCard = {card:card,description:description,imgSrc:imgSrc};
-    cardExplanations.push(newCard);
+    let newCard = {card:card,description:description,imgSrc:imgSrc}
+    cardExplanations.push(newCard)
 }
 
 export function getCardExplanations(category="",type="") {
     if (category === "" && type === "") {
-        return cardExplanations;
+        return cardExplanations
     }
     if (category === "") {
-        return cardExplanations.filter(card => card.type === type);
+        return cardExplanations.filter(card => card.type === type)
     }
     if (type === "") {
-        return cardExplanations.filter(card => card.category === category);
+        return cardExplanations.filter(card => card.category === category)
     }
-    return cardExplanations.filter(card => card.category === category && card.type === type);
+    return cardExplanations.filter(card => card.category === category && card.type === type)
 }
 
 export function getCardExplanation(card) {
@@ -59,10 +59,10 @@ export function getCardExplanation(card) {
 }
 
 export function setCallback(card,callback,moment="onpair"){
-    cardExplanations.find(item => item.card === card).callback = callback;
-    cardExplanations.find(item => item.card === card).callbackMoment = moment;
+    cardExplanations.find(item => item.card === card).callback = callback
+    cardExplanations.find(item => item.card === card).callbackMoment = moment
 }
 
 export function addSvg(card, svgSrc){
-    cardExplanations.find(item => item.card === card).svgSrc = svgSrc;
+    cardExplanations.find(item => item.card === card).svgSrc = svgSrc
 }

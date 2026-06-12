@@ -1,6 +1,7 @@
 let xp = loadStuff().xp || 0
-let level = loadStuff().level || 0;
-let xpMultiplier = loadStuff().xpMultiplier || 1;
+let level = loadStuff().level || 0
+let xpMultiplier = loadStuff().xpMultiplier || 1
+let runXp = 0
 
 on("cardSolved", () => {
     updateXP(10)
@@ -15,24 +16,20 @@ on("levelCompleted", () => {
 })
 
 on("buyUpgrade", (e) => {
-    let upgrade = e;
-    console.log("upgrade", upgrade)
+    let upgrade = e
     if (upgrade.id === 1) { // name === "experience expediter"
-        xpMultiplier = 1 + upgrade.boughtLevels * 0.05;
+        xpMultiplier = 1 + upgrade.boughtLevels * 0.05
         saveStuff( { xpMultiplier })
     }
 
 })
 
 function updateXP(deltaXP) {
-    console.log("updateXP", deltaXP);
-    console.log("mult", xpMultiplier);
-    console.log("comb", deltaXP * xpMultiplier);
-
-    xp += (deltaXP * xpMultiplier);
+    runXp += deltaXP * xpMultiplier
+    xp += (deltaXP * xpMultiplier)
     saveStuff({ xp })
     checkIfNewLevel()
-    document.getElementsByClassName("xp-text-game")[0].textContent = `${Math.floor(xp)} XP ⭐`
+    document.getElementsByClassName("xp-text-game")[0].textContent = `XP This Run: ${Math.floor(runXp)}⭐`
 }
 
 const levels = {
@@ -58,8 +55,8 @@ const levels = {
 }
 
 function setXP0() {
-    xp = 0;
-    level = 1;
+    xp = 0
+    level = 1
     saveStuff({ xp, level })
 }
 function getXP() {
@@ -67,12 +64,12 @@ function getXP() {
 }
 
 function getLevel() {
-    return loadStuff().level || 1;
+    return loadStuff().level || 1
 }
 
 function checkIfNewLevel() {
-    const previous = loadStuff().level || 1;
-    const current = checkLevel();
+    const previous = loadStuff().level || 1
+    const current = checkLevel()
     if (current > previous) {
         level = current
         saveStuff({ level })
@@ -84,11 +81,11 @@ function checkIfNewLevel() {
 }
 
 function checkLevel() {
-    let currentLevel = 1;
+    let currentLevel = 1
     for (const [level, requiredXP] of Object.entries(levels)) {
         if (xp >= requiredXP) {
-            currentLevel = parseInt(level);
+            currentLevel = parseInt(level)
         }
     }
-    return currentLevel;
+    return currentLevel
 }

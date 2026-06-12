@@ -14,10 +14,10 @@
 <div class="topbar">
     <div class="currenciesgame">
         <div class="gold">
-            <p class="gold-text-game">0 🪙</p>
+            <p class="gold-text-game">Gold: 0🪙</p>
         </div>
         <div class="xp">
-            <p class="xp-text-game">XP Total: 1⭐</p>
+            <p class="xp-text-game">XP: 0⭐</p>
         </div>
         <p class="level-text-game">Level: 1 🚀</p>
     </div>
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <div id="blurscreen" class="hidden">
+    <div id="end-level-blurscreen" class="blurscreen hidden">
         <div id="outer-card-selector">
             <h2>Level complete!</h2>
             <h2>Pick a new card!</h2>
@@ -49,6 +49,19 @@
             <button class="blurbutton" id="end-game-button">End game</button>
         </div>
     </div>
+    <div id="end-run-blurscreen" class="blurscreen hidden">
+        <div id="end-run-screen">
+            <h1>Game over!</h1>
+            <h2 id="end-run-stats">You have earned: x Gold and x XP</h2>
+            <h2 id="end-run-score">Gold + XP = x Score</h2>
+            <div id="end-run-buttons">
+                <button class="blurbutton" id="submit-score-button">Submit score</button>
+                <button class="blurbutton" id="return-home-button">Back to Homepage</button>
+                <button class="blurbutton" id="play-again-button">Play again</button>
+            </div>
+        </div>
+    </div>
+
 </div>
 <script src="/scripts/eventbus.js"></script>
 <script src="/scripts/networking.js"></script>
@@ -59,9 +72,10 @@
 <script type="module" src="/scripts/cardDistributor.js"></script>
 <script>
     const displaydata = loadStuff();
-    document.getElementsByClassName("gold-text-game")[0].textContent = `${displaydata.gold} Gold 🪙`
-    document.getElementsByClassName("xp-text-game")[0].textContent = `${displaydata.xp} XP ⭐`
-    document.getElementsByClassName("level-text-game")[0].textContent = `Level: ${displaydata.level} 🚀`
+    document.getElementsByClassName("gold-text-game")[0].textContent = `Gold: ${Math.floor(displaydata.gold)}🪙`
+    document.getElementsByClassName("xp-text-game")[0].textContent = `XP: ${Math.floor(displaydata.xp)}⭐`
+    document.getElementsByClassName("level-text-game")[0].textContent = `Level: ${Math.floor(displaydata.level)} 🚀`
+    document.documentElement.dataset.theme = loadStuff().theme || "light"
 </script>
 </body>
 </html>

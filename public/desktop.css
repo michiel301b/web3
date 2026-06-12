@@ -46,6 +46,10 @@ body {
     background-color: var(--card-back-unsolved-hover);
 }
 
+.shredded:hover {
+    transform: scale(1);
+}
+
 #card-container {
     width: 30vw;
 }
@@ -81,6 +85,10 @@ body {
 #leaderboard-screen, #shop-screen, #preferences-screen {
     left: 30vw;
     width: 40vw;
+}
+
+#preferences-screen {
+    width: 30vw;
 }
 
 .card-selector-label:hover {

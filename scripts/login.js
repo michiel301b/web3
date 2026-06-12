@@ -1,40 +1,39 @@
-document.getElementById("loginForm").addEventListener("submit", registerOrLogin);
+document.getElementById("loginForm").addEventListener("submit", registerOrLogin)
 
 
 
 
 
 async function registerOrLogin(event) {
-    event.preventDefault();
+    event.preventDefault()
 
-    let form = event.target;
+    let form = event.target
     let currentLoginAttempt = {
         username: form.username.value,
         email: form.email.value,
         password: form.password.value
     }
-    let validBool = validateCredentials(currentLoginAttempt.username, currentLoginAttempt.email, currentLoginAttempt.password);
+    let validBool = validateCredentials(currentLoginAttempt.username, currentLoginAttempt.email, currentLoginAttempt.password)
     if (validBool) {
         let localUsers = loadStuff().users || []
         for (let user of localUsers) {
             if (user.email === currentLoginAttempt.email) {
                 if (user.username === currentLoginAttempt.username && user.password === await hashString(currentLoginAttempt.password)) {
-                    await loginUser(currentLoginAttempt);
-                    return false;
+                    await loginUser(currentLoginAttempt)
+                    return false
                 }
-                alert("email is already in use, but other credentials may not match.");
-                console.log(user.username, currentLoginAttempt.username, user.password, await hashString(currentLoginAttempt.password))
-                return false;
+                alert("email is already in use, but other credentials may not match.")
+                return false
             }
         }
-        await registerUser(currentLoginAttempt);
-        await loginUser(currentLoginAttempt);
-        return false;
+        await registerUser(currentLoginAttempt)
+        await loginUser(currentLoginAttempt)
+        return false
     }
     else {
-        document.getElementById("bad-login-entry").classList.remove("hidden");
+        document.getElementById("bad-login-entry").classList.remove("hidden")
     }
-    return false;
+    return false
 }
 
 function validateCredentials(username, email, password) {
@@ -47,7 +46,7 @@ function validateCredentials(username, email, password) {
     if (password.length < 8) {
         return false
     }
-    return true;
+    return true
 }
 
 async function loginUser(currentLoginAttempt) {
@@ -67,23 +66,21 @@ async function loginUser(currentLoginAttempt) {
             return res.json()
         }
         else{
-            throw new Error(res.statusText);
+            throw new Error(res.statusText)
         }
     })
         .then((data) => {
             localStorage.setItem("token",data.token)
-            window.location.replace("http://localhost:63342/web3/Templates/home_page.html");
+            window.location.replace("http://localhost:63342/web3/Templates/home_page.html")
         })
-        .catch(err => console.log(err));
-    console.log("logged in ", currentLoginAttempt)
+        .catch(err => console.log(err))
 }
 
 async function registerUser(currentLoginAttempt) {
     currentLoginAttempt.password = await hashString(currentLoginAttempt.password)
     let users = loadStuff().users || [{}]
-    users.push(currentLoginAttempt);
-    saveStuff({users});
-    console.log("registered ", currentLoginAttempt)
+    users.push(currentLoginAttempt)
+    saveStuff({users})
 
     const user = window.oldFetch("http://localhost:8000/memory/register", {
         method: "POST",
@@ -99,17 +96,17 @@ async function registerUser(currentLoginAttempt) {
 }
 
 async function hashString(str) {
-    return str;
+    return str
 }
 
 
 // async function hashString(str) {                         //inconsistent????
-//     const data = new TextEncoder().encode(str);
-//     const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+//     const data = new TextEncoder().encode(str)
+//     const hashBuffer = await crypto.subtle.digest("SHA-256", data)
 //
 //     return [...new Uint8Array(hashBuffer)]
 //         .map(b => b.toString(16).padStart(2, "0"))
-//         .join("");
+//         .join("")
 // }
 
 // let strings = ["test1","name","password","reallylongpasswordforsomereasonidonevenknow","12345678"]
@@ -119,7 +116,7 @@ async function hashString(str) {
 //
 // async function testHashString() {
 //     for (let string of strings) {
-//         console.log(string);
+//         console.log(string)
 //         console.log(await hashString(string))
 //     }
 // }

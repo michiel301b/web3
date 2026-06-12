@@ -74,6 +74,9 @@
             <label class="color-switch">
                 <input name="theme" type="radio" value="light" checked="checked">Light mode
             </label>
+            <label class="color-switch">
+                <input name="theme" type="radio" value="rainbow">Pride mode
+            </label>
         </div>
         <h3>Card API</h3>
         <div class="api-selector">
@@ -97,3 +100,4 @@
 <script src="/scripts/preferences.js"></script>
 <script src="/scripts/homePagePopupManager.js"></script>
 <script type="module" src="/scripts/shop.js"></script>
+<script>document.documentElement.dataset.theme = loadStuff().theme || "light"</script>
