@@ -1,4 +1,4 @@
-import {addSvg, getCardExplanation, getCardExplanations, setCallback} from "/web3/scripts/cardExplanations.js"
+import {getCardExplanation, getCardExplanations, setCallback} from "/web3/scripts/cardExplanations.js"
 import {getShopUpgrades} from "/web3/scripts/shopUpgrades.js"
 
 
@@ -27,43 +27,41 @@ let maxLives = STARTING_VALUES.MAX_LIVES + (loadStuff().level || 1)
 let livesLeft = maxLives
 let sparkleIntervalIDs = []
 
-
-async function fetchIcons() {
-    const allCards = getCardExplanations()
-    let cards = []
-    for (let item of allCards) {
-        cards.push(item)
-    }
-    return await Promise.all(
-        cards.map(async (card) => {
-            const res = await window.oldFetch(card.imgSrc)
-                .then(res => res.text())
-            addSvg(card.card, res)
-            return res
-        })
-    )
-}
-
-fetchIcons()//.finally(()=>{console.log("Done loading icons. End time: " + Date.now())})
-
-function setAllCallbackFunctions(){
-    setCallback("Heart",        () => {healHeart();healHeart()},"onpair")
-    setCallback("Hollow-Heart", () => healHeart(),"onpair")
-    setCallback("Star",         () => {post("bonusXP"); post("bonusXP")},"onpair")
-    setCallback("Hollow-Star",  () => post("bonusXP"),"onpair")
-    setCallback("Duplicate",    () => deckOfCards.push(getCardExplanation("Duplicate")),"onselect")
-    setCallback("Washing-Machine",shuffleUnsolvedCards,"onpair")
-    setCallback("Magnet",       (deck) => putMagnetsAdjacent(deck),"onshuffle")
-    setCallback("Hollow-Crystal-Ball", () => {setTimeout(()=>{const unsolvedCards = getAllUnsolvedCards()
-        if (unsolvedCards.length <= 0) return
-        reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)},500)}, "onpair")
-    setCallback("Crystal-Ball", () => {setTimeout(()=>{const unsolvedCards = getAllUnsolvedCards()
-        if (unsolvedCards.length <= 0) return
-        reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)
-        reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)},500)}, "onpair")
-    setCallback("Shredder",     shredUnsolved,"onpair")
-    setCallback("Broken-Heart", () => {breakHeart(); breakHeart()},"onpair")
-    setCallback("Hollow-Broken-Heart", () => breakHeart,"onpair")
+export function setAllCallbackFunctions() {
+    setCallback("Heart", () => {
+        healHeart();
+        healHeart()
+    }, "onpair")
+    setCallback("Hollow-Heart", () => healHeart(), "onpair")
+    setCallback("Star", () => {
+        post("bonusXP");
+        post("bonusXP")
+    }, "onpair")
+    setCallback("Hollow-Star", () => post("bonusXP"), "onpair")
+    setCallback("Duplicate", () => deckOfCards.push(getCardExplanation("Duplicate")), "onselect")
+    setCallback("Washing-Machine", shuffleUnsolvedCards, "onpair")
+    setCallback("Magnet", (deck) => putMagnetsAdjacent(deck), "onshuffle")
+    setCallback("Hollow-Crystal-Ball", () => {
+        setTimeout(() => {
+            const unsolvedCards = getAllUnsolvedCards()
+            if (unsolvedCards.length <= 0) return
+            reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)
+        }, 500)
+    }, "onpair")
+    setCallback("Crystal-Ball", () => {
+        setTimeout(() => {
+            const unsolvedCards = getAllUnsolvedCards()
+            if (unsolvedCards.length <= 0) return
+            reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)
+            reveal(unsolvedCards[Math.floor(Math.random() * unsolvedCards.length)].id)
+        }, 500)
+    }, "onpair")
+    setCallback("Shredder", shredUnsolved, "onpair")
+    setCallback("Broken-Heart", () => {
+        breakHeart();
+        breakHeart()
+    }, "onpair")
+    setCallback("Hollow-Broken-Heart", () => breakHeart, "onpair")
 }
 
 function shredUnsolved() {
@@ -82,28 +80,15 @@ function shredUnsolved() {
 function shred(id) {
     let card = document.getElementById(id)
     card.innerHTML = '<div class="shred s1"></div>\n' +
-                     '<div class="shred s2"></div>\n' +
-                     '<div class="shred s3"></div>\n' +
-                     '<div class="shred s4"></div>\n' +
-                     '<div class="shred s5"></div>'
+        '<div class="shred s2"></div>\n' +
+        '<div class="shred s3"></div>\n' +
+        '<div class="shred s4"></div>\n' +
+        '<div class="shred s5"></div>'
     card.style.backgroundColor = 'rgba(0, 0, 0, 0)'
     card.style.boxShadow = 'none'
     card.classList.add('shredded')
 }
 
-function initEventListeners() {
-    document.getElementById("confirm-choice").addEventListener("click", nextLevel)
-    document.getElementById("end-game-button").addEventListener("click", endGame)
-    document.getElementById("restartGameButton").addEventListener("click", endGame)
-    document.getElementById("returnToHomeButton").addEventListener("click", () => window.location.href = "http://localhost:63342/web3/Templates/home_page.html")
-    document.getElementById("startGameButton").addEventListener("click", startGame)
-    on("levelUp", () => {
-        document.getElementsByClassName("level-text-game")[0].classList.add("levelup")
-        setTimeout(() => {
-            document.getElementsByClassName("level-text-game")[0].classList.remove("levelup")
-        }, 10000)
-    })
-}
 
 function startOfGameUpgrades() {
     for (let upgrade of getShopUpgrades()) {
@@ -114,13 +99,18 @@ function startOfGameUpgrades() {
 }
 
 function shuffleDeckOfCards(deckOfCards) {
+    let filledDeck = Array(deckOfCards.length * 2).fill(null)
+    let cardsWithOnShuffle = deckOfCards.filter(card => card.callbackMoment === "onshuffle")
+    for (let card of cardsWithOnShuffle) {
+        card.callback()   //todo fix
+    }
     let toShuffleDeck = deckOfCards.concat(deckOfCards)
     for (let i = 0; i < toShuffleDeck.length; i++) {
         const j = Math.floor(Math.random() * (i + 1));
         [toShuffleDeck[i], toShuffleDeck[j]] = [toShuffleDeck[j], toShuffleDeck[i]]
     }
     for (let card of deckOfCards) {
-        if (card.callback && card.callbackMoment === "onshuffle"){
+        if (card.callback && card.callbackMoment === "onshuffle") {
             toShuffleDeck = card.callback(toShuffleDeck)
         }
     }
@@ -134,14 +124,17 @@ function putMagnetsAdjacent(deck) {         //todo make more robust
             magnetIndices.push(i)
         }
     }
-    if (magnetIndices.length !== 2) {return deck}
+    if (magnetIndices.length !== 2) {
+        return deck
+    }
     const randomMagnetIndex = magnetIndices[Math.floor(Math.random() * magnetIndices.length)]
-    const otherMagnetIndex = magnetIndices.filter((num)=>num !== randomMagnetIndex)[0]
-    const candidates = getValidAdjacentCells(randomMagnetIndex,deck.length).filter(x => x < deck.length)
+    const otherMagnetIndex = magnetIndices.filter((num) => num !== randomMagnetIndex)[0]
+    const candidates = getValidAdjacentCells(randomMagnetIndex, deck.length).filter(x => x < deck.length)
     const randomCandidate = candidates[Math.floor(Math.random() * candidates.length)];
-    [deck[otherMagnetIndex],deck[randomCandidate]] = [deck[randomCandidate],deck[otherMagnetIndex]]
+    [deck[otherMagnetIndex], deck[randomCandidate]] = [deck[randomCandidate], deck[otherMagnetIndex]]
     return deck
 }
+
 function getValidAdjacentCells(index, deckSize) {
     const size = 8
     const x = index % size
@@ -193,7 +186,7 @@ function generateHearts() {
     }
 }
 
-function generateCardHtml(){
+function generateCardHtml() {
     shuffledDeckOfCards = shuffleDeckOfCards(deckOfCards)
     console.log(shuffledDeckOfCards)
     let cardholder = document.getElementById("card-holder")
@@ -203,7 +196,7 @@ function generateCardHtml(){
         card.classList.add("card")
         card.id = "card-" + i
 
-        card.addEventListener("click",  () => {
+        card.addEventListener("click", () => {
             cardClick(card.id)
         })
 
@@ -218,12 +211,12 @@ function startGame() {
         deckSize = STARTING_VALUES.STARTING_DECK_SIZE
         deckOfCards = []
     }
-    while(deckOfCards.length < deckSize) {
+    while (deckOfCards.length < deckSize) {
         let normalCards = getCardExplanations().filter(card => card.type === "normal")
         deckOfCards.push(normalCards[deckOfCards.length])
     }
     for (let card of deckOfCards) {
-        if (card.callback && card.callbackMoment === "onlevelstart"){
+        if (card.callback && card.callbackMoment === "onlevelstart") {
             card.callback()
         }
     }
@@ -259,7 +252,7 @@ function resetGame() {
     healAllHearts()
 }
 
-function cardClick(id){
+function cardClick(id) {
     let cardElement = document.getElementById(id)
     if (uiLocked || cardElement.classList.contains("solved-card") || cardElement.classList.contains("shredded")) {
         return
@@ -267,24 +260,24 @@ function cardClick(id){
     let cardId = id.slice(5) // removes "card-" from the element id
     if (cardId === selected[0] || cardId === selected[1]) {
         return
-    }else if (selected[0] === -1) {
+    } else if (selected[0] === -1) {
         selected[0] = cardId
-    }
-    else if (selected[1] === -1) {
+    } else if (selected[1] === -1) {
         selected[1] = cardId
     }
     flipCard(cardId)
     if (selected[1] >= 0) {
         let checkMatchResult = checkMatch()
         uiLocked = true
-        if (checkMatchResult === ""){
-            setTimeout(function(){resetCard(selected[0])
+        if (checkMatchResult === "") {
+            setTimeout(function () {
+                resetCard(selected[0])
                 resetCard(selected[1])
                 breakHeart()
                 uiLocked = false
-                selected = [-1, -1]}, 2000)
-        }
-        else {
+                selected = [-1, -1]
+            }, 2000)
+        } else {
             solvedPairs.push(checkMatchResult)
             setCardSolved(selected[0])
             setCardSolved(selected[1])
@@ -295,7 +288,9 @@ function cardClick(id){
             }
             selected = [-1, -1]
             post("cardSolved")
-            setTimeout(function(){uiLocked = false}, 400)
+            setTimeout(function () {
+                uiLocked = false
+            }, 400)
         }
 
         const same =
@@ -305,7 +300,7 @@ function cardClick(id){
                     return deckCard.card === card.card
                 })
             )
-        if(same){
+        if (same) {
             levelDone()
         }
     }
@@ -326,7 +321,7 @@ function endGame() {
 function decideEndLevelCards() {
     let types = []
     let endLevelCardAmount = STARTING_VALUES.END_LEVEL_CARD_AMOUNT + endLevelCardAmountBonus
-    if (Math.random() < negativeOdds){
+    if (Math.random() < negativeOdds) {
         for (let i = 0; i < endLevelCardAmount; i++) {
             types.push("negative")
         }
@@ -335,11 +330,9 @@ function decideEndLevelCards() {
     for (let i = 0; i < endLevelCardAmount; i++) {
         if (Math.random() < rareOdds) {
             types.push("rare")
-        }
-        else if (Math.random() < specialOdds) {
+        } else if (Math.random() < specialOdds) {
             types.push("special")
-        }
-        else {
+        } else {
             types.push("normal")
         }
     }
@@ -374,14 +367,14 @@ function levelDone() {
     let endLevelSelectableCards = []
     let ELSCardTypes = decideEndLevelCards()
     for (let type of ELSCardTypes) {
-        let possibleCards = getCardExplanations("",type)
+        let possibleCards = getCardExplanations("", type)
         let availableCards = possibleCards.filter(
             card => !deckOfCards.includes(card) && !endLevelSelectableCards.includes(card)
         )
 
         if (availableCards.length === 0) {
             console.warn("couldnt find card at rarity: " + type)
-            possibleCards = getCardExplanations("","normal")
+            possibleCards = getCardExplanations("", "normal")
             availableCards = possibleCards.filter(
                 card => !deckOfCards.includes(card) && !endLevelSelectableCards.includes(card)
             )
@@ -407,10 +400,10 @@ function levelDone() {
         label.htmlFor = "selector-card-" + i
         label.classList.add("card-selector-label")
         label.innerHTML = endLevelSelectableCards[i].svgSrc
-        label.classList.add("card-selector-"+endLevelSelectableCards[i].type)
+        label.classList.add("card-selector-" + endLevelSelectableCards[i].type)
 
 
-        card.addEventListener("change", (event)=> {
+        card.addEventListener("change", (event) => {
             let explanation = document.getElementById("level-complete-card-explanation")
             explanation.innerText = endLevelSelectableCards[i].description
             selectedEndLevelCard = endLevelSelectableCards[i]
@@ -436,21 +429,23 @@ function nextLevel() {
     resetLevel()
 }
 
-function checkMatch(){
-    if(shuffledDeckOfCards.length > 1){
-        if(shuffledDeckOfCards[selected[0]] === shuffledDeckOfCards[selected[1]]){
+function checkMatch() {
+    if (shuffledDeckOfCards.length > 1) {
+        if (shuffledDeckOfCards[selected[0]] === shuffledDeckOfCards[selected[1]]) {
             return shuffledDeckOfCards[selected[0]]
         }
     }
     return ""
 }
 
-function flipCard(cardId){
+function flipCard(cardId) {
     let cardElement = document.getElementById("card-" + cardId)
     cardElement.style.animation = "none"
     cardElement.offsetHeight //You apparently need this otherwise it will optimize the animation away
     cardElement.style.animation = "card-flip 0.8s ease-in-out forwards"
-    setTimeout(function(){cardElement.innerHTML = shuffledDeckOfCards[cardId].svgSrc},400)
+    setTimeout(function () {
+        cardElement.innerHTML = shuffledDeckOfCards[cardId].svgSrc
+    }, 400)
 }
 
 function reveal(id) {
@@ -474,19 +469,23 @@ function reveal(id) {
 
 }
 
-function resetCard(cardId){
+function resetCard(cardId) {
     let cardElement = document.getElementById("card-" + cardId)
     cardElement.style.animation = "none"
     cardElement.offsetHeight //You apparently need this otherwise it will optimize the animation away
     cardElement.style.animation = "card-flip 0.8s ease-in-out backwards"
     if (!cardElement.classList.contains("revealed-card")) {
-        setTimeout(function(){cardElement.innerHTML = "<p></p>"},400)
+        setTimeout(function () {
+            cardElement.innerHTML = "<p></p>"
+        }, 400)
     }
 }
 
-function setCardSolved(cardId){
+function setCardSolved(cardId) {
     let cardElement = document.getElementById("card-" + cardId)
-    setTimeout(function(){cardElement.className = cardElement.className + " solved-card"},400)
+    setTimeout(function () {
+        cardElement.className = cardElement.className + " solved-card"
+    }, 400)
 }
 
 function breakHeart() {
@@ -494,7 +493,7 @@ function breakHeart() {
     updateHeart()
 }
 
-function updateHeart(){
+function updateHeart() {
     if (livesLeft > maxLives) livesLeft = maxLives
     if (livesLeft > 10) {
         let text = document.getElementById("extra")
@@ -507,22 +506,23 @@ function updateHeart(){
     }
     if (livesLeft < 10) {
         for (let i = 0; i <= 10; ++i) {
-            let breakingHeart = document.getElementById("heart"+livesLeft)
+            let breakingHeart = document.getElementById("heart" + livesLeft)
             if (i > livesLeft) {
-                if (!breakingHeart.classList.contains("broken")){
+                if (!breakingHeart.classList.contains("broken")) {
                     breakingHeart.className += " broken"
                 }
-            }
-            else{
-                if (breakingHeart.classList.contains("broken")){
+            } else {
+                if (breakingHeart.classList.contains("broken")) {
                     breakingHeart.classList.remove("broken")
                 }
             }
         }
     }
-    if (livesLeft <= 0){
-        setTimeout(function(){alert("Game Over")
-            window.location.href = "home_page.html"},1000)
+    if (livesLeft <= 0) {
+        setTimeout(function () {
+            alert("Game Over")
+            window.location.href = "home_page.html"
+        }, 1000)
     }
 }
 
@@ -584,5 +584,4 @@ function shuffleUnsolvedCards() {
 }
 
 
-initEventListeners()
 setAllCallbackFunctions()
