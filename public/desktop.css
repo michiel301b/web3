@@ -120,3 +120,7 @@ body {
     height: 75px;
     font-size: 32px;
 }
+
+.leaderboard-entry:hover {
+    background: rgba(255, 255, 255, 0.15);
+}

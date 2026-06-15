@@ -71,7 +71,7 @@ async function loginUser(currentLoginAttempt) {
     })
         .then((data) => {
             localStorage.setItem("token",data.token)
-            window.location.replace("http://localhost:63342/web3/Templates/home_page.html")
+            window.location.replace("home_page.html")
         })
         .catch(err => console.log(err))
 }
