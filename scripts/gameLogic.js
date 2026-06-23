@@ -99,11 +99,6 @@ function startOfGameUpgrades() {
 }
 
 function shuffleDeckOfCards(deckOfCards) {
-    let filledDeck = Array(deckOfCards.length * 2).fill(null)
-    let cardsWithOnShuffle = deckOfCards.filter(card => card.callbackMoment === "onshuffle")
-    for (let card of cardsWithOnShuffle) {
-        card.callback()   //todo fix
-    }
     let toShuffleDeck = deckOfCards.concat(deckOfCards)
     for (let i = 0; i < toShuffleDeck.length; i++) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -117,7 +112,7 @@ function shuffleDeckOfCards(deckOfCards) {
     return toShuffleDeck
 }
 
-function putMagnetsAdjacent(deck) {         //todo make more robust
+function putMagnetsAdjacent(deck) {
     const magnetIndices = []
     for (let i = 0; i < deck.length; i++) {
         if (deck[i].card === "Magnet") {
@@ -129,13 +124,13 @@ function putMagnetsAdjacent(deck) {         //todo make more robust
     }
     const randomMagnetIndex = magnetIndices[Math.floor(Math.random() * magnetIndices.length)]
     const otherMagnetIndex = magnetIndices.filter((num) => num !== randomMagnetIndex)[0]
-    const candidates = getValidAdjacentCells(randomMagnetIndex, deck.length).filter(x => x < deck.length)
+    const candidates = getValidAdjacentCells(randomMagnetIndex).filter(x => x < deck.length)
     const randomCandidate = candidates[Math.floor(Math.random() * candidates.length)];
     [deck[otherMagnetIndex], deck[randomCandidate]] = [deck[randomCandidate], deck[otherMagnetIndex]]
     return deck
 }
 
-function getValidAdjacentCells(index, deckSize) {
+function getValidAdjacentCells(index) {
     const size = 8
     const x = index % size
     const y = Math.floor(index / size)
@@ -234,7 +229,6 @@ function resetLevel() {
     solvedPairs = []
     selected = [-1, -1]
     uiLocked = false
-    //deckSize += 1
     startGame()
 }
 

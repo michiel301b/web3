@@ -53,3 +53,12 @@ function publishScore(score){
         })
     }).then((response) => response.json())
 }
+
+function getPreferences() {
+    return fetch("http://localhost:8000/player/preferences", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+}

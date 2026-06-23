@@ -13,3 +13,8 @@ document.getElementById("api-selector").addEventListener("change", (e) => {
     saveStuff({API})
     console.log(e.currentTarget.value)
 })
+
+getPreferences().then((response) => {
+    console.log(response.json())
+    return response
+})

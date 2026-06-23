@@ -24,3 +24,11 @@ could:
 won't:
  give you up
  let you down
+
+
+
+
+ nu nog te doen:
+    inlog error afhandelen
+    angular app maken
+    geen uplay dependency

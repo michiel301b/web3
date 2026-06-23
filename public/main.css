@@ -705,6 +705,7 @@ p, button {
 
 .login-form input {
     background-color: var(--bg-color);
+    color: var(--text-color);
     border: solid var(--bg-color) 1px;
     margin: 10px 0;
     border-radius: 12px;

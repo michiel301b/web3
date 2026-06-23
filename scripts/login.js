@@ -27,7 +27,7 @@ async function registerOrLogin(event) {
             }
         }
         await registerUser(currentLoginAttempt)
-        await loginUser(currentLoginAttempt)
+        await loginUser(currentLoginAttempt)    //When creating a new account, automatically login right after.
         return false
     }
     else {
@@ -66,7 +66,7 @@ async function loginUser(currentLoginAttempt) {
             return res.json()
         }
         else{
-            throw new Error(res.statusText)
+            alert("Error while trying to log in: " + res.statusText)
         }
     })
         .then((data) => {
@@ -82,7 +82,7 @@ async function registerUser(currentLoginAttempt) {
     users.push(currentLoginAttempt)
     saveStuff({users})
 
-    const user = window.oldFetch("http://localhost:8000/memory/register", {
+    return window.oldFetch("http://localhost:8000/memory/register", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -92,13 +92,22 @@ async function registerUser(currentLoginAttempt) {
             email: currentLoginAttempt.email,
             password: currentLoginAttempt.password
         })
-    }).then(res => console.log(res.status))
+    }).then(res => {
+        if (res.status === 201) {
+            // created user successfully
+        }
+        else {
+            alert("Error while trying to register: " + res.statusText)
+        }
+    })
 }
 
 async function hashString(str) {
     return str
 }
 
+//The hashing function seemed to work just fine. It would return a hashed version of the input string
+//An hour later the same password would no longer work because the returned hash was different.
 
 // async function hashString(str) {                         //inconsistent????
 //     const data = new TextEncoder().encode(str)

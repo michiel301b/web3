@@ -21,8 +21,6 @@ let cardExplanations = [
     {card:"Hollow-Heart",       category:"shapes",type:"special",description:"Heals 1 heart when paired",imgSrc:"https://api.iconify.design/mdi/heart-outline.svg"},
     {card:"Star",               category:"shapes",type:"special",description:"Grants double xp when paired",imgSrc:"https://api.iconify.design/mdi/star.svg"},
     {card:"Hollow-Star",        category:"shapes",type:"special",description:"Grants 1.5x xp when paired",imgSrc:"https://api.iconify.design/mdi/star-outline.svg"},
-    {card:"Book",               category:"shapes",type:"special",description:"Something to do with reading probably. maybe get info?",imgSrc:"https://api.iconify.design/mdi/book-open-variant.svg"},
-    {card:"Hollow-Book",        category:"shapes",type:"special",description:"Something to do with reading probably. maybe get info?",imgSrc:"https://api.iconify.design/mdi/book-open-blank-variant-outline.svg"},
     {card:"Duplicate",          category:"shapes",type:"special",description:"Appears twice as often, easier to match",imgSrc:"https://api.iconify.design/material-symbols/auto-awesome-motion-sharp.svg"},
     {card:"Washing-Machine",    category:"appliances",type:"special",description:"Shuffles unsolved cards when paired",imgSrc:"https://api.iconify.design/mdi/washing-machine.svg"},
     {card:"Shredder",           category:"appliances",type:"special",description:"Shreds two unsolved matching cards",imgSrc:"https://api.iconify.design/lucide/shredder.svg"},
