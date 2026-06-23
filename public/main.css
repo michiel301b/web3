@@ -726,7 +726,7 @@ p, button {
     position: absolute;
     top: 0;
     height: 100%;
-    background: cadetblue;
+    background: var(--card-back-unsolved);
     animation: shred 1.2s forwards ease-in 0.5s;
 }
 .s1 { --x:-1; --r:-1; }
@@ -801,4 +801,91 @@ p, button {
     text-align: right;
     font-weight: bold;
     font-size: 1.05rem;
+}
+
+.api-selector,
+.email-input {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 320px;
+    margin-bottom: 1.5rem;
+
+    padding: 1rem;
+    border-radius: 12px;
+
+    background: var(--bg-color-contrast);
+    color: var(--text-color);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+#api-selector {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--bg-color);
+    color: inherit;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#api-selector:focus {
+    outline: none;
+    border-color: var(--bg-color-contrast);
+}
+
+.email-input label {
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+#email-input {
+    padding: 0.6rem 0.8rem;
+    border-radius: 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--bg-color);
+    color: inherit;
+
+    transition: 0.2s ease;
+}
+
+#email-input:focus {
+    outline: none;
+    border-color: var(--bg-color);
+}
+
+#email-change-confirm {
+    margin-top: 0.5rem;
+    padding: 0.6rem 0.9rem;
+
+    border: none;
+    border-radius: 8px;
+
+    background: var(--bg-color);
+    color: var(--text-color);
+
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+#email-change-confirm:active {
+    transform: translateY(0);
+    filter: brightness(0.95);
 }

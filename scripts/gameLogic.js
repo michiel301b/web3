@@ -201,7 +201,7 @@ function generateCardHtml() {
 
 }
 
-function startGame() {
+export function startGame() {
     if (deckSize === 0) {
         deckSize = STARTING_VALUES.STARTING_DECK_SIZE
         deckOfCards = []
@@ -300,7 +300,7 @@ function cardClick(id) {
     }
 }
 
-function endGame() {
+export function endGame() {
     document.getElementById("end-level-blurscreen").classList.add("hidden")
     document.getElementById("end-run-blurscreen").classList.remove("hidden")
     document.getElementById("end-run-stats").innerText = `You have earned: ${runGold} Gold and ${runXp} XP`
@@ -412,7 +412,7 @@ function levelDone() {
     document.getElementById("end-level-blurscreen").classList.remove("hidden")
 }
 
-function nextLevel() {
+export function nextLevel() {
     if (!selectedEndLevelCard) return
     document.getElementById("card-container").classList.remove("blurred")
     document.getElementById("end-level-blurscreen").classList.add("hidden")

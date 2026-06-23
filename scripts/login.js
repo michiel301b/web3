@@ -71,6 +71,7 @@ async function loginUser(currentLoginAttempt) {
     })
         .then((data) => {
             localStorage.setItem("token",data.token)
+            localStorage.setItem("username",currentLoginAttempt.username)
             window.location.replace("home_page.html")
         })
         .catch(err => console.log(err))

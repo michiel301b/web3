@@ -124,3 +124,8 @@ body {
 .leaderboard-entry:hover {
     background: rgba(255, 255, 255, 0.15);
 }
+
+#email-change-confirm:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.1);
+}
