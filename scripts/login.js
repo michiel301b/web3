@@ -43,7 +43,7 @@ function validateCredentials(username, email, password) {
     if (!email.includes("@")) {
         return false
     }
-    if (password.length < 8) {
+    if (password.length < 3) {
         return false
     }
     return true
@@ -66,7 +66,7 @@ async function loginUser(currentLoginAttempt) {
             return res.json()
         }
         else{
-            alert("Error while trying to log in: " + res.statusText)
+            throw new Error(res.statusText)
         }
     })
         .then((data) => {
@@ -74,14 +74,12 @@ async function loginUser(currentLoginAttempt) {
             localStorage.setItem("username",currentLoginAttempt.username)
             window.location.replace("home_page.html")
         })
-        .catch(err => console.log(err))
+        .catch(err => alert("Error while trying to log in: " + err))
 }
 
 async function registerUser(currentLoginAttempt) {
     currentLoginAttempt.password = await hashString(currentLoginAttempt.password)
-    let users = loadStuff().users || [{}]
-    users.push(currentLoginAttempt)
-    saveStuff({users})
+
 
     return window.oldFetch("http://localhost:8000/memory/register", {
         method: "POST",
@@ -95,7 +93,9 @@ async function registerUser(currentLoginAttempt) {
         })
     }).then(res => {
         if (res.status === 201) {
-            // created user successfully
+            let users = loadStuff().users || [{}]
+            users.push(currentLoginAttempt)
+            saveStuff({users})
         }
         else {
             alert("Error while trying to register: " + res.statusText)
