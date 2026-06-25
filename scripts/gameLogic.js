@@ -5,23 +5,27 @@ import {getShopUpgrades} from "/web3/scripts/shopUpgrades.js"
 //let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"]
 //let endLevelPossibleCards = ["α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω"]
 
-const upgrade = (loadStuff().upgrades ?? []).find(u => u.id === 0);
-const heartBoughtLevels = upgrade?.boughtLevels ?? 0;
+const heartUpgrades = (loadStuff().upgrades ?? []).find(h => h.id === 0);
+const heartBoughtLevels = heartUpgrades?.boughtLevels ?? 0;
+const specialOddsUpgrades = (loadStuff().upgrades ?? []).find(s => s.id === 3);
+const specialOddsBoughtLevels = specialOddsUpgrades?.boughtLevels ?? 0;
+const negativeOddsUpgrades = (loadStuff().upgrades ?? []).find(n => n.id === 4);
+const negativeOddsBoughtLevels = negativeOddsUpgrades?.boughtLevels ?? 0;
 
 const STARTING_VALUES = {
     STARTING_DECK_SIZE: 2,
     END_LEVEL_CARD_AMOUNT: 3,
     RARE_ODDS: 0.05,
-    SPECIAL_ODDS: 0.99,
-    NEGATIVE_ODDS: 0.0,
+    SPECIAL_ODDS: 0.2,
+    NEGATIVE_ODDS: 0.2,
     MAX_LIVES: 9,
 }
 let selectedEndLevelCard
 let endLevelCardAmountBonus = 0
 let deckOfCards = []
 let rareOdds = STARTING_VALUES.RARE_ODDS
-let specialOdds = STARTING_VALUES.SPECIAL_ODDS
-let negativeOdds = STARTING_VALUES.NEGATIVE_ODDS
+let specialOdds = STARTING_VALUES.SPECIAL_ODDS + (specialOddsBoughtLevels * 0.02);
+let negativeOdds = STARTING_VALUES.NEGATIVE_ODDS - (negativeOddsBoughtLevels * 0.01);
 let deckSize = STARTING_VALUES.STARTING_DECK_SIZE
 let selected = [-1, -1]
 let shuffledDeckOfCards = []

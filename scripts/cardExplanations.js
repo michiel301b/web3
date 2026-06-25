@@ -17,16 +17,17 @@ let cardExplanations = [
     {card:"Arrow-Right",        category:"shapes",type:"normal",description:"Just a boring arrow",imgSrc:"https://api.iconify.design/mdi/arrow-right-bold.svg"},
     {card:"Hollow-Arrow-Right", category:"shapes",type:"normal",description:"Just a boring arrow",imgSrc:"https://api.iconify.design/mdi/arrow-right-bold-outline.svg"},
 
-    {card:"Heart",              category:"shapes",type:"special",description:"Heals 2 hearts when paired",imgSrc:"https://api.iconify.design/mdi/heart.svg"},
     {card:"Hollow-Heart",       category:"shapes",type:"special",description:"Heals 1 heart when paired",imgSrc:"https://api.iconify.design/mdi/heart-outline.svg"},
-    {card:"Star",               category:"shapes",type:"special",description:"Grants double xp when paired",imgSrc:"https://api.iconify.design/mdi/star.svg"},
     {card:"Hollow-Star",        category:"shapes",type:"special",description:"Grants 1.5x xp when paired",imgSrc:"https://api.iconify.design/mdi/star-outline.svg"},
     {card:"Duplicate",          category:"shapes",type:"special",description:"Appears twice as often, easier to match",imgSrc:"https://api.iconify.design/material-symbols/auto-awesome-motion-sharp.svg"},
     {card:"Washing-Machine",    category:"appliances",type:"special",description:"Shuffles unsolved cards when paired",imgSrc:"https://api.iconify.design/mdi/washing-machine.svg"},
     {card:"Shredder",           category:"appliances",type:"special",description:"Shreds two unsolved matching cards",imgSrc:"https://api.iconify.design/lucide/shredder.svg"},
     {card:"Magnet",             category:"appliances",type:"special",description:"Will always be next to another magnet",imgSrc:"https://api.iconify.design/mdi/magnet.svg"},
     {card:"Hollow-Crystal-Ball",category:"appliances",type:"special",description:"Will reveal an unsolved card",imgSrc:"https://api.iconify.design/mdi/crystal-ball.svg"},
-    {card:"Crystal-Ball",       category:"appliances",type:"special",description:"Will reveal two unsolved cards",imgSrc:"https://api.iconify.design/mingcute/crystal-ball-fill.svg"},
+
+    {card:"Heart",              category:"shapes",type:"rare",description:"Heals 2 hearts when paired",imgSrc:"https://api.iconify.design/mdi/heart.svg"},
+    {card:"Star",               category:"shapes",type:"rare",description:"Grants double xp when paired",imgSrc:"https://api.iconify.design/mdi/star.svg"},
+    {card:"Crystal-Ball",       category:"appliances",type:"rare",description:"Will reveal two unsolved cards",imgSrc:"https://api.iconify.design/mingcute/crystal-ball-fill.svg"},
 
     {card:"Broken-Heart",       category:"shapes",type:"negative",description:"Costs you 2 hearts when paired",imgSrc:"https://api.iconify.design/material-symbols-light/heart-broken.svg"},
     {card:"Hollow-Broken-Heart",category:"shapes",type:"negative",description:"Costs you 1 hearts when paired",imgSrc:"https://api.iconify.design/material-symbols-light/heart-broken-outline.svg"},
