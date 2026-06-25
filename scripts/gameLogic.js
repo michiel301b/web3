@@ -487,39 +487,15 @@ function breakHeart() {
 }
 
 function updateHeart() {
-    if (livesLeft > maxLives) livesLeft = maxLives
-    if (livesLeft > 10) {
-        let text = document.getElementById("extra")
-        text.textContent = `+${livesLeft - 10}`
-        return
-    }
-    if (maxLives > 10 && livesLeft === 10) {
-        let text = document.getElementById("extra")
-        text.remove()
-    }
-    if (livesLeft < 10) {
-        for (let i = 0; i <= 10; ++i) {
-            let breakingHeart = document.getElementById("heart" + livesLeft)
-            if (i > livesLeft) {
-                if (!breakingHeart.classList.contains("broken")) {
-                    breakingHeart.className += " broken"
-                }
-            } else {
-                if (breakingHeart.classList.contains("broken")) {
-                    breakingHeart.classList.remove("broken")
-                }
-            }
-        }
-    }
-    if (livesLeft <= 0) {
-            endGame();
-    }
+    let heartcontainer = document.getElementsByClassName("heart-container")[0]
+    heartcontainer.innerHTML = "";
+    generateHearts();
 }
 
+
 function healAllHearts() {
-    while (livesLeft < maxLives) {
-        healHeart()
-    }
+    livesLeft = maxLives;
+    updateHeart();
 }
 
 function healHeart() {
