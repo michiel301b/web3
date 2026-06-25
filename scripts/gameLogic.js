@@ -489,6 +489,9 @@ function breakHeart() {
 function updateHeart() {
     let heartcontainer = document.getElementsByClassName("heart-container")[0]
     heartcontainer.innerHTML = "";
+    if (livesLeft <= 0) {
+        endGame();
+    }
     generateHearts();
 }
 
