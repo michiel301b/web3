@@ -3,7 +3,7 @@ let runGold = 0;
 let goldMultiplier = loadStuff().goldMultiplier || 1;
 
 on("cardSolved", () => {
-    gold += 1000 * goldMultiplier;
+    gold += 1 * goldMultiplier;
     runGold += 1 * goldMultiplier;
     updateGold()
 });
@@ -33,8 +33,8 @@ function spendGold(cost) {
 on("buyUpgrade", (e) => {
     let upgrade = e;
     if (upgrade.id === 6) { // name === "Midas' touch"
-        xpMultiplier = 1 + upgrade.boughtLevels * 0.05;
-        saveStuff( { xpMultiplier })
+        goldMultiplier = 1 + upgrade.boughtLevels * 0.05;
+        saveStuff( { goldMultiplier })
     }
 
 })
