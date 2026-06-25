@@ -4,6 +4,10 @@ import {getShopUpgrades} from "/web3/scripts/shopUpgrades.js"
 
 //let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"]
 //let endLevelPossibleCards = ["α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω"]
+
+const upgrade = loadStuff().upgrades.find(u => u.id === 0);
+const heartBoughtLevels = upgrade?.boughtLevels ?? 0;
+
 const STARTING_VALUES = {
     STARTING_DECK_SIZE: 2,
     END_LEVEL_CARD_AMOUNT: 3,
@@ -23,7 +27,7 @@ let selected = [-1, -1]
 let shuffledDeckOfCards = []
 let solvedPairs = []
 let uiLocked = false
-let maxLives = STARTING_VALUES.MAX_LIVES + (loadStuff().level || 1)
+let maxLives = STARTING_VALUES.MAX_LIVES + (loadStuff().level || 1) + heartBoughtLevels;
 let livesLeft = maxLives
 let sparkleIntervalIDs = []
 
