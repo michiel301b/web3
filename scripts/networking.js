@@ -53,7 +53,9 @@ function publishScore(score){
             color_found: solvedColor,
             color_closed: unsolvedColor
         })
-    }).then((response) => response.json())
+    }).then(
+        (response) => response.json()
+    )
 }
 
 function getPreferences() {

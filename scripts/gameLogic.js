@@ -309,7 +309,6 @@ export function endGame() {
     document.getElementById("submit-score-button").addEventListener("click", () => publishScore(score))
     document.getElementById("return-home-button").addEventListener("click", () => window.location.href = "http://localhost:63342/web3/Templates/home_page.html")
     document.getElementById("play-again-button").addEventListener("click", resetGame)
-
 }
 
 function decideEndLevelCards() {
@@ -513,10 +512,7 @@ function updateHeart() {
         }
     }
     if (livesLeft <= 0) {
-        setTimeout(function () {
-            alert("Game Over")
-            window.location.href = "home_page.html"
-        }, 1000)
+            endGame();
     }
 }
 
