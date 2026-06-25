@@ -3,7 +3,7 @@ let runGold = 0;
 let goldMultiplier = loadStuff().goldMultiplier || 1;
 
 on("cardSolved", () => {
-    gold += 1 * goldMultiplier;
+    gold += 1000 * goldMultiplier;
     runGold += 1 * goldMultiplier;
     updateGold()
 });

@@ -5,7 +5,7 @@ import {getShopUpgrades} from "/web3/scripts/shopUpgrades.js"
 //let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"]
 //let endLevelPossibleCards = ["α","β","γ","δ","ε","ζ","η","θ","ι","κ","λ","μ","ν","ξ","ο","π","ρ","σ","τ","υ","φ","χ","ψ","ω"]
 
-const upgrade = loadStuff().upgrades.find(u => u.id === 0);
+const upgrade = (loadStuff().upgrades ?? []).find(u => u.id === 0);
 const heartBoughtLevels = upgrade?.boughtLevels ?? 0;
 
 const STARTING_VALUES = {
