@@ -41,17 +41,8 @@ let allUpgrades = loadStuff().upgrades ||
         baseCost: 20,
         costIncrement: 12,
 
-    },{
+    }, {
         id: 4,
-        name: "Combo Wombat",
-        icon: "https://api.iconify.design/token/wombat.svg",
-        description: "Pairing cards starts a combo. Pairing more cards without losing a life grants more gold and XP.",
-        maxLevels: 1,
-        boughtLevels: 0,
-        costType: "flat",
-        baseCost: 30,
-    },{
-        id: 5,
         name: "No Negative Nancy",
         icon: "https://api.iconify.design/icon-park-solid/bad-two.svg",
         description: "Reduces the chance of finding negative cards at the end of each level.",
@@ -61,7 +52,7 @@ let allUpgrades = loadStuff().upgrades ||
         baseCost: 30,
         costIncrement: 13,
     },{
-        id: 6,
+        id: 5,
         name: "Midas' Touch",
         icon: "https://api.iconify.design/mdi/gold.svg",
         description: "Multiplies the amount of gold you get per pair.",
