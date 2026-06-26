@@ -13,6 +13,7 @@
     --card-back-solved-hover: #82dc7c;
     --card-back-unsolved-hover: #8ed3d5;
     --card-back-special: #dde158;
+    --card-back-rare: rebeccapurple;
     --card-back-negative: #b44;
     --card-unavailable: #555;
     --card-unavailable-hover: #444;
@@ -46,6 +47,7 @@
     --card-back-unsolved-hover: #17535a;
 
     --card-back-special: #9c9e4a;
+    --card-back-rare: #563875;
     --card-back-negative: #b44;
 
     --card-unavailable: #3a3a3a;
@@ -80,6 +82,10 @@
 
     --card-back-solved-hover: #00e676;
     --card-back-unsolved-hover: #18ffff;
+
+    --card-back-special: #fbfd47;
+    --card-back-rare: #9b3eff;
+    --card-back-negative: #ff3b3b;
 
     --card-unavailable: #3a3a5a;
     --card-unavailable-hover: #4b4b70;
@@ -573,6 +579,10 @@ p, button {
 
 .card-selector-special {
     background-color: var(--card-back-special);
+}
+
+.card-selector-rare {
+    background-color: var(--card-back-rare);
 }
 
 .card-selector-negative {
