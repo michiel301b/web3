@@ -1,4 +1,4 @@
-import {getCardExplanations,addSvg} from "/web3/scripts/cardExplanations.js";
+import {getCardExplanations,addSvg} from "/scripts/cardExplanations.js";
 
 export async function fetchIcons() {
     const allCards = getCardExplanations()
@@ -20,7 +20,7 @@ export function initEventListeners({nextLevel,endGame,startGame}) {
     document.getElementById("confirm-choice").addEventListener("click", nextLevel)
     document.getElementById("end-game-button").addEventListener("click", endGame)
     document.getElementById("restartGameButton").addEventListener("click", endGame)
-    document.getElementById("returnToHomeButton").addEventListener("click", () => window.location.href = "http://localhost:63342/web3/Templates/home_page.html")
+    document.getElementById("returnToHomeButton").addEventListener("click", () => window.location.href = "/Templates/home_page.html")
     document.getElementById("startGameButton").addEventListener("click", startGame)
     on("levelUp", () => {
         document.getElementsByClassName("level-text-game")[0].classList.add("levelup")

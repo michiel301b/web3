@@ -30,7 +30,7 @@ window.fetch = async function(url, options = {}) {
 function logout() {
     localStorage.removeItem("token")
     localStorage.removeItem("username")
-    window.location.replace("/web3/Templates/login.html")
+    window.location.replace("/Templates/index.html")
 }
 
 function publishScore(score){

@@ -1,5 +1,5 @@
-import {fetchIcons,initEventListeners} from "/web3/scripts/gameInit.js"
-import {nextLevel,endGame,startGame,setAllCallbackFunctions} from "/web3/scripts/gameLogic.js"
+import {fetchIcons,initEventListeners} from "/scripts/gameInit.js"
+import {nextLevel,endGame,startGame,setAllCallbackFunctions} from "/scripts/gameLogic.js"
 
 
 fetchIcons()

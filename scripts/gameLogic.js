@@ -1,5 +1,5 @@
-import {getCardExplanation, getCardExplanations, setCallback} from "/web3/scripts/cardExplanations.js"
-import {getShopUpgrades} from "/web3/scripts/shopUpgrades.js"
+import {getCardExplanation, getCardExplanations, setCallback} from "/scripts/cardExplanations.js"
+import {getShopUpgrades} from "/scripts/shopUpgrades.js"
 
 
 //let standardPossibleCards = ["▲", "■", "●", "⬟", "A", "B", "C", "D", "E", "F"]
@@ -241,7 +241,6 @@ function resetLevel() {
 }
 
 function resetGame() {
-    document.getElementById("end-level-blurscreen").classList.remove("hidden")
     document.getElementById("end-run-blurscreen").classList.add("hidden")
     document.getElementById("card-holder").innerHTML = ""
     document.getElementsByClassName("heart-container")[0].innerHTML = ""
@@ -315,7 +314,7 @@ export function endGame() {
     let score = runXp + runGold
     document.getElementById("end-run-score").innerText = `Gold + XP = ${score} Score`
     document.getElementById("submit-score-button").addEventListener("click", () => publishScore(score))
-    document.getElementById("return-home-button").addEventListener("click", () => window.location.href = "http://localhost:63342/web3/Templates/home_page.html")
+    document.getElementById("return-home-button").addEventListener("click", () => window.location.href = "/Templates/home_page.html")
     document.getElementById("play-again-button").addEventListener("click", resetGame)
 }
 

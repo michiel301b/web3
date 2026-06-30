@@ -1,4 +1,4 @@
-import {addSvg, getShopUpgrades, buyShopUpgrade} from "/web3/scripts/shopUpgrades.js"
+import {addSvg, getShopUpgrades, buyShopUpgrade} from "/scripts/shopUpgrades.js"
 
 let selectedUpgrade = undefined
 
